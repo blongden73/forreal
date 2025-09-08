@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Gallery with SVG Logo</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #000;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+        }
+        #webgl-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            outline: none;
+        }
+        .ui-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+        .header, .footer {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            pointer-events: auto;
+        }
+        .header a, .footer-left a, .footer-right a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+        .footer-left {
+            max-width: 200px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        /* Removed .logo style as it's now in 3D */
+    </style>
+</head>
+<body>
+    <canvas id="webgl-canvas"></canvas>
+
+    <div class="ui-overlay">
+        <header class="header">
+            <div></div>
+            <nav>
+                <a href="#">ARTISTS</a>
+                <a href="#">LATEST</a>
+            </nav>
+        </header>
+        <footer class="footer">
+            <div class="footer-left">
+                <p>A 3D gallery with randomized images and a logo in the distance.</p>
+            </div>
+            <!-- Removed the HTML logo div -->
+        </footer>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+
+        // --- Configuration ---
+        const IMAGE_ASPECT_RATIO = 9 / 16;
+        const PLANE_SPACING = 7;
+        const SPREAD = 6;
+        const AUTO_SPEED = 0.03;
+        const MIN_WIDTH = 5;
+        const MAX_WIDTH = 6.5;
+        const VERTICAL_SPREAD = 4.5;
+        const ROTATION_STRENGTH = 0.1;
+
+        // --- Image URLs (Replace with your own) ---
+        const imageUrls = [
+            'images/found-1.jpg',
+            'images/money-1.jpg',
+            'images/nng1.jpg',
+            'images/oldspice-1.jpg',
+            'images/found-1.jpg',
+            'images/money-1.jpg',
+            'images/nng1.jpg',
+            'images/oldspice-1.jpg',
+            'images/found-1.jpg',
+            'images/money-1.jpg',
+            'images/nng1.jpg',
+            'images/oldspice-1.jpg',
+            'images/found-1.jpg',
+            'images/money-1.jpg',
+            'images/nng1.jpg',
+            'images/oldspice-1.jpg',
+            'images/found-1.jpg',
+            'images/money-1.jpg',
+            'images/nng1.jpg',
+            'images/oldspice-1.jpg',
+            'images/found-1.jpg',
+            'images/money-1.jpg',
+            'images/nng1.jpg',
+            'images/oldspice-1.jpg'
+        ];
+
+        // --- Scene Setup ---
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('webgl-canvas'), antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        
+        const textureLoader = new THREE.TextureLoader();
+        const imageGroup = new THREE.Group();
+        
+        // --- Create Randomized Image Planes ---
+        imageUrls.forEach((url, i) => {
+            const randomWidth = THREE.MathUtils.randFloat(MIN_WIDTH, MAX_WIDTH);
+            const randomHeight = randomWidth * IMAGE_ASPECT_RATIO;
+            const geometry = new THREE.PlaneGeometry(randomWidth, randomHeight);
+            const material = new THREE.MeshBasicMaterial({ map: textureLoader.load(url) });
+            const mesh = new THREE.Mesh(geometry, material);
+            
+            const xPos = THREE.MathUtils.randFloat(-SPREAD, SPREAD);
+            const yPos = THREE.MathUtils.randFloat(-VERTICAL_SPREAD, VERTICAL_SPREAD);
+            const zPos = -i * PLANE_SPACING - PLANE_SPACING + THREE.MathUtils.randFloat(-2, 2); 
+            mesh.position.set(xPos, yPos, zPos);
+
+            mesh.rotation.x = THREE.MathUtils.randFloat(-ROTATION_STRENGTH, ROTATION_STRENGTH);
+            mesh.rotation.y = THREE.MathUtils.randFloat(-ROTATION_STRENGTH, ROTATION_STRENGTH);
+            mesh.rotation.z = THREE.MathUtils.randFloat(-ROTATION_STRENGTH, ROTATION_STRENGTH);
+
+            imageGroup.add(mesh);
+        });
+        scene.add(imageGroup);
+
+        // --- 3D Logo from SVG ---
+        const svgLogoString = `<svg width="1953" height="231" viewBox="0 0 1953 231" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1952.54 223H1735.65V7.62598H1820.72V165.084H1952.54V223Z" fill="white"/><path d="M1724.94 223H1634.44L1625.39 198.265H1536.71L1527.66 223H1437.17L1528.87 7.62598H1633.24L1724.94 223ZM1606.69 145.779L1581.35 72.7812H1580.75L1555.41 145.779H1606.69Z" fill="white"/><path d="M1427.95 223H1199V7.62598H1427.95V60.1121H1284.06V89.07H1417.69V141.556H1284.06V170.514H1427.95V223Z" fill="white"/><path d="M1186.74 223H1093.83C1091.42 218.475 1090.51 210.029 1090.21 198.265L1089.31 182.278C1088.4 166.291 1082.67 156.638 1067.29 156.638H1006.96V223H921.894V7.62598H1101.07C1120.98 7.62598 1136.06 9.43586 1146.32 12.7539C1156.27 16.3737 1164.72 23.3115 1171.35 33.5674C1177.99 43.8233 1181.31 55.2858 1181.31 67.6532C1181.31 92.9913 1169.54 110.788 1148.13 116.821V117.425C1161.1 121.044 1171.05 131.3 1172.56 150.605L1176.18 197.662C1177.09 207.315 1181.01 216.062 1186.74 223ZM1066.08 61.922H1006.96V102.342H1067.29C1084.18 102.342 1090.81 95.7061 1090.81 82.1321C1090.81 67.6532 1082.97 61.922 1066.08 61.922Z" fill="white"/><path d="M789.135 223H696.229C693.816 218.475 692.911 210.029 692.609 198.265L691.704 182.278C690.799 166.291 685.068 156.638 669.684 156.638H609.355V223H524.292V7.62598H703.468C723.377 7.62598 738.459 9.43586 748.715 12.7539C758.669 16.3737 767.115 23.3115 773.751 33.5674C780.388 43.8233 783.706 55.2858 783.706 67.6532C783.706 92.9913 771.942 110.788 750.525 116.821V117.425C763.495 121.044 773.45 131.3 774.958 150.605L778.578 197.662C779.483 207.315 783.404 216.062 789.135 223ZM668.477 61.922H609.355V102.342H669.684C686.576 102.342 693.212 95.7061 693.212 82.1321C693.212 67.6532 685.37 61.922 668.477 61.922Z" fill="white"/><path d="M219.746 115.313C219.746 64.9382 240.559 34.7738 268.914 18.7867C278.265 13.3571 290.33 8.8324 305.111 5.21266C319.59 1.89458 340.102 0.0847168 366.948 0.0847168C382.634 0.0847168 395.604 0.386358 406.162 1.2913C416.719 2.19622 428.182 4.60938 440.851 8.22912C453.218 12.1505 464.078 17.2784 473.428 23.613C500.878 42.9182 514.15 72.781 514.15 115.313C514.15 167.497 493.94 195.249 467.094 211.236C457.743 216.967 445.979 221.492 431.5 225.111C416.719 228.731 395.303 230.541 366.948 230.541C338.895 230.541 317.78 228.731 302.999 225.413C288.219 221.793 276.455 217.269 267.405 211.839C258.054 206.409 249.91 199.472 242.972 191.026C228.795 174.134 219.746 149.097 219.746 115.313ZM366.646 54.3807C330.147 54.3807 310.239 73.9876 310.239 115.313C310.239 156.035 329.243 176.245 366.948 176.245C404.654 176.245 423.657 156.035 423.657 115.313C423.657 74.5909 404.654 54.3807 366.646 54.3807Z" fill="white"/><path d="M207.711 145.477H85.2429V223H0.179199V7.62598H218.268V60.1121H85.2429V92.9913H207.711V145.477Z" fill="white"/></svg>`;
+        const encodedSvg = btoa(svgLogoString);
+        const dataUrl = `data:image/svg+xml;base64,${encodedSvg}`;
+        const logoTexture = textureLoader.load(dataUrl);
+
+        const LOGO_ASPECT_RATIO = 1953 / 231;
+        const logoWidth = 300; // <-- Change this value to resize the logo
+        const logoHeight = logoWidth / LOGO_ASPECT_RATIO;
+        
+        const logoGeometry = new THREE.PlaneGeometry(logoWidth, logoHeight);
+        const logoMaterial = new THREE.MeshBasicMaterial({
+            map: logoTexture,
+            transparent: true,
+            opacity: 1
+        });
+        const logoMesh = new THREE.Mesh(logoGeometry, logoMaterial);
+        
+        const totalDepthForLogo = imageUrls.length * PLANE_SPACING;
+        logoMesh.position.set(0, 100, -totalDepthForLogo - 20);
+        scene.add(logoMesh);
+
+        // --- Automatic Animation ---
+        const totalDepth = imageUrls.length * PLANE_SPACING;
+
+        const animate = () => {
+            requestAnimationFrame(animate);
+            imageGroup.position.z = (imageGroup.position.z + AUTO_SPEED) % totalDepth;
+            renderer.render(scene, camera);
+        };
+        
+        animate();
+
+        // --- Handle Window Resize ---
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        });
+    </script>
+</body>
+</html>
+
+
