@@ -96,6 +96,7 @@
         
         const int MAX_RIPPLES = 10;
         uniform vec4 u_ripples[MAX_RIPPLES]; // x, y: position; z: start time; w: pressure
+        uniform vec2 u_ripple_velocities[MAX_RIPPLES]; // New uniform for ripple velocities
 
         // New uniforms for the text texture
         uniform sampler2D u_textTexture;
@@ -144,15 +145,34 @@
                     float time_since_click = u_time - u_ripples[i].z;
                     float pressure = u_ripples[i].w; // Get pressure from the 4th component
                     
-                    // Ripple properties are now modified by pressure
-                    float max_ripple_time = 3.0 + pressure * 3.0;     // Lasts longer with more pressure
+                    // Further toned down the effect of pressure for an even more subtle feel
+                    float max_ripple_time = 3.0 + pressure * 1.5;     // Lasts even shorter
                     float ripple_speed = 1.2;
-                    float ripple_frequency = 40.0 - pressure * 20.0;  // Creates wider waves with more pressure
-                    float ripple_amplitude = 0.015 + pressure * 0.03; // Deeper impression with more pressure
+                    float ripple_frequency = 40.0 - pressure * 10.0;  // Even less widening
+                    float ripple_amplitude = 0.015 + pressure * 0.015; // Even less deep
 
                     if (time_since_click < max_ripple_time) {
                         vec2 ripple_center = u_ripples[i].xy;
-                        float dist = distance(uv, ripple_center);
+                        vec2 velocity = u_ripple_velocities[i];
+                        float vel_mag = length(velocity);
+
+                        vec2 dist_vec = uv - ripple_center;
+
+                        // If moving, stretch the ripple shape to be elliptical
+                        if (vel_mag > 0.01) { // Threshold to avoid stretching from noise
+                            vec2 vel_dir = normalize(velocity);
+                            // Use smoothstep to ease into the stretch and cap its max effect for a more natural shape
+                            float stretch_factor = 1.0 + smoothstep(0.0, 1.5, vel_mag) * 2.0;
+                            
+                            // Decompose the distance vector into components parallel and perpendicular to the velocity
+                            vec2 parallel_component = dot(dist_vec, vel_dir) * vel_dir;
+                            vec2 perpendicular_component = dist_vec - parallel_component;
+                            
+                            // Reconstruct the distance vector, compressing the perpendicular part to create an ellipse
+                            dist_vec = parallel_component + perpendicular_component / stretch_factor;
+                        }
+                        
+                        float dist = length(dist_vec);
                         
                         // Calculate the wave that expands outwards
                         float wave = sin(dist * ripple_frequency - time_since_click * ripple_speed * 5.0);
@@ -282,18 +302,22 @@
         const resolutionUniformLocation = gl.getUniformLocation(shaderProgram, 'u_resolution');
         const timeUniformLocation = gl.getUniformLocation(shaderProgram, 'u_time');
         const rippleUniformLocation = gl.getUniformLocation(shaderProgram, 'u_ripples');
+        const rippleVelocitiesUniformLocation = gl.getUniformLocation(shaderProgram, 'u_ripple_velocities');
         const textTextureUniformLocation = gl.getUniformLocation(shaderProgram, 'u_textTexture');
         const textResolutionUniformLocation = gl.getUniformLocation(shaderProgram, 'u_textResolution');
 
         // --- Ripple Management ---
         const MAX_RIPPLES = 10;
         const ripples = [];
+        const rippleVelocities = []; // New array for velocities
         for (let i = 0; i < MAX_RIPPLES; i++) {
             ripples.push({ x: 0, y: 0, startTime: -1, pressure: 0 });
+            rippleVelocities.push({ x: 0, y: 0 }); // Initialize velocities
         }
         let currentRippleIndex = 0;
         let isInteracting = false; // Tracks mouse down or touch start
         let interactionStartTime = 0; // Tracks when a click/touch begins
+        let lastInteractionPos = { x: 0, y: 0, time: 0 }; // For velocity calculation
 
         // --- Text Texture Setup ---
         let textTexture = null;
@@ -334,17 +358,37 @@
         function createRipple(x, y) {
             const rect = canvas.getBoundingClientRect();
             const ripple = ripples[currentRippleIndex];
+            const rippleVelocity = rippleVelocities[currentRippleIndex];
 
-            // Calculate pressure based on how long the mouse has been held down
+            // Calculate velocity
+            const currentTime = performance.now();
+            const dt = currentTime - lastInteractionPos.time;
+            let velX = 0, velY = 0;
+
+            // Only calculate velocity if there's a previous point and time has passed
+            if (dt > 1 && lastInteractionPos.time > 0) {
+                const dx = x - lastInteractionPos.x; // dx/dy in CSS pixels
+                const dy = y - lastInteractionPos.y;
+
+                // Velocity in normalized screen space units per second
+                velX = (dx / canvas.clientWidth) / (dt / 1000.0);
+                velY = -(dy / canvas.clientHeight) / (dt / 1000.0); // Flip Y and normalize
+            }
+            lastInteractionPos = { x, y, time: currentTime };
+            
+            // Store velocity for the shader
+            rippleVelocity.x = velX;
+            rippleVelocity.y = velY;
+
+            // Calculate pressure based on how long the mouse has been held down, ramping up slower.
             const duration = interactionStartTime > 0 ? (performance.now() - interactionStartTime) / 1000.0 : 0;
-            const pressure = Math.min(1.0, duration * 0.5); // Reaches max pressure in 2 seconds
+            const pressure = Math.min(1.0, duration * 0.4); // Reaches max pressure in 2.5 seconds for a gentler effect
             
             // Convert pixel coords to WebGL normalized coords (0 to 1)
-            // We use clientWidth and clientHeight to match the CSS display size, fixing the offset issue.
             ripple.x = (x - rect.left) / canvas.clientWidth;
             ripple.y = 1.0 - ((y - rect.top) / canvas.clientHeight); // Flip Y-axis
             ripple.startTime = performance.now() / 1000.0; // Store time in seconds
-            ripple.pressure = pressure; // Store the calculated pressure
+            ripple.pressure = pressure;
 
             // Cycle through the ripple array
             currentRippleIndex = (currentRippleIndex + 1) % MAX_RIPPLES;
@@ -354,6 +398,7 @@
         canvas.addEventListener('mousedown', (event) => {
             isInteracting = true;
             interactionStartTime = performance.now();
+            lastInteractionPos = { x: 0, y: 0, time: 0 }; // Reset on new click
             createRipple(event.clientX, event.clientY);
         });
 
@@ -372,6 +417,7 @@
         canvas.addEventListener('touchstart', (event) => {
             isInteracting = true;
             interactionStartTime = performance.now();
+            lastInteractionPos = { x: 0, y: 0, time: 0 }; // Reset on new touch
             // Prevent default touch behavior like scrolling
             event.preventDefault(); 
             for (let i = 0; i < event.touches.length; i++) {
@@ -414,19 +460,32 @@
 
             // Prepare ripple data for the shader
             const rippleData = new Float32Array(MAX_RIPPLES * 4);
+            const rippleVelocitiesData = new Float32Array(MAX_RIPPLES * 2);
+
             ripples.forEach((ripple, i) => {
                 // If a ripple is too old, reset its start time so the shader ignores it.
-                // 7.0 seconds is a safe cleanup time, as the max ripple life is 6s.
-                if (time - ripple.startTime > 7.0) {
+                if (time - ripple.startTime > 7.0) { // 7s is a safe cleanup time
                     ripple.startTime = -1.0;
                 }
                 const offset = i * 4;
                 rippleData[offset] = ripple.x;
                 rippleData[offset + 1] = ripple.y;
                 rippleData[offset + 2] = ripple.startTime;
-                rippleData[offset + 3] = ripple.pressure; // Add pressure
+                rippleData[offset + 3] = ripple.pressure;
+
+                // Populate velocity data
+                const velOffset = i * 2;
+                const velocity = rippleVelocities[i];
+                if (ripple.startTime < 0.0) { // If ripple is inactive, zero out velocity
+                    rippleVelocitiesData[velOffset] = 0.0;
+                    rippleVelocitiesData[velOffset + 1] = 0.0;
+                } else {
+                    rippleVelocitiesData[velOffset] = velocity.x;
+                    rippleVelocitiesData[velOffset + 1] = velocity.y;
+                }
             });
             gl.uniform4fv(rippleUniformLocation, rippleData);
+            gl.uniform2fv(rippleVelocitiesUniformLocation, rippleVelocitiesData); // Send velocities
 
             // Update text texture uniforms if the texture is ready
             if (textTexture) {
@@ -434,7 +493,7 @@
                 
                 // Tell the shader to use texture unit 0 for u_textTexture
                 gl.activeTexture(gl.TEXTURE0);
-                gl.bindTexture(gl.TEXTURE_2D, textTexture);
+                gl.bindTexture(gl.TEXTURE_D, textTexture);
                 gl.uniform1i(textTextureUniformLocation, 0);
             }
             
@@ -450,5 +509,6 @@
     </script>
 </body>
 </html>
+
 
 
