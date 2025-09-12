@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cossette+Texte:wght@400;700&display=swap" rel="stylesheet">
     <title>Interactive Liquid Background</title>
     <style>
         /* Basic styles to make the canvas fullscreen and remove scrollbars */
@@ -12,6 +15,7 @@
             /* overflow: hidden; */ /* Allow scrolling now */
             height: 100%;
             background-color: #000;
+            font-family: "Cossette Texte", sans-serif;
         }
 
         .fixed-background {
@@ -52,18 +56,82 @@
         }
 
         .grid-container {
-            width: 90vw;
-            margin: 10vh auto;
+            width: 100vw;
+            margin: auto auto;
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 3vw;
+            gap: 0.5vw;
             pointer-events: auto; /* Re-enable pointer events for the grid content */
+            padding-top: 30px;
         }
 
         .grid-item {
             background-color: #000;
             aspect-ratio: 16 / 9;
-            border-radius: 12px;
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .studio-descriptor {
+            font-family: "Cossette Texte", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            font-size: 22px;
+            border-top: 1px solid #fff;
+            padding-top: 10px;
+            width: 98%;
+            z-index: 10;
+            pointer-events: none;
+            transition: opacity 0.1s ease-out, filter 0.1s ease-out;
+        }
+
+        .footer .flex{
+            display: flex;
+            width: 96vw;
+            margin: 10vh auto;
+            padding-bottom: 60px;
+            justify-content: space-between;
+        }
+
+        .footer .flex .footer-logo {
+            width: 300px;
+        }
+
+        .footer .flex .footer-logo svg {
+            width: 100%;
+            height: auto;
+        }
+
+        .footer .flex .footer-message {
+            color: #fff;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .work-section-title {
+            font-size: 2vw;
+            color: #fff;
+            font-family: "Cossette Texte", sans-serif;
+        }
+
+        .flex-sticky-header {
+            width: 98vw;
+            margin: 2vh auto;
+            position: sticky;
+            top: 10px;
+            display: flex;
+            justify-content: space-between;
         }
 
     </style>
@@ -87,49 +155,52 @@
             </defs>
         </svg>
         
-        <!-- This SVG is for the centered text. It's hidden and will be drawn onto the WebGL canvas. -->
-        <svg id="text-svg" style="display: none;" width="658" height="25" viewBox="0 0 658 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M648.815 24H645.465V4.34089H636.931V1.43311H657.349V4.34089H648.815V24Z" fill="white"/>
-            <path d="M634.353 24H630.465L615.958 6.04763H615.895V24H612.545V1.43311H616.432L630.94 19.3855H631.003V1.43311H634.353V24Z" fill="white"/>
-            <path d="M604.267 15.8772V1.43311H607.617V15.4663C607.617 21.5347 604.204 24.5689 597.409 24.5689C590.613 24.5689 587.2 21.5347 587.2 15.4663V1.43311H590.55V15.8772C590.55 19.67 592.952 21.6612 597.409 21.6612C601.928 21.6612 604.267 19.67 604.267 15.8772Z" fill="white"/>
-            <path d="M558.529 12.7165C558.529 6.39527 562.575 0.800951 571.077 0.864163C579.326 0.737737 583.719 6.33206 583.624 12.7165C583.687 19.101 579.421 24.6953 571.077 24.5689C562.733 24.6953 558.434 19.0378 558.529 12.7165ZM561.879 12.7165C561.911 18.3741 565.482 21.6295 571.077 21.6611C576.734 21.6295 580.242 18.3109 580.274 12.7165C580.274 9.93518 579.452 7.75434 577.809 6.17403C576.134 4.59371 573.89 3.80355 571.077 3.77194C565.419 3.80355 561.911 7.15382 561.879 12.7165Z" fill="white"/>
-            <path d="M552.542 15.3715H555.892C555.45 20.3653 550.772 24.6953 544.609 24.5689C537.466 24.5689 532.63 19.9228 532.756 12.6533C532.756 5.95278 536.96 0.927375 544.577 0.864161C550.045 0.832555 555.45 3.58231 555.892 9.5559H552.542C552.005 6.0476 549.16 3.77194 544.83 3.77194C539.267 3.77194 536.107 7.09061 536.107 13.001C536.075 18.1528 539.425 21.7875 544.64 21.6611C548.907 21.6611 551.625 19.5119 552.542 15.3715Z" fill="white"/>
-            <path d="M518.453 24H514.565L500.058 6.04763H499.995V24H496.645V1.43311H500.532L515.039 19.3855H515.103V1.43311H518.453V24Z" fill="white"/>
-            <path d="M467.784 12.7165C467.784 6.39527 471.83 0.800951 480.332 0.864163C488.581 0.737737 492.974 6.33206 492.88 12.7165C492.943 19.101 488.676 24.6953 480.332 24.5689C471.988 24.6953 467.689 19.0378 467.784 12.7165ZM471.135 12.7165C471.166 18.3741 474.738 21.6295 480.332 21.6611C485.99 21.6295 489.498 18.3109 489.529 12.7165C489.529 9.93518 488.708 7.75434 487.064 6.17403C485.389 4.59371 483.145 3.80355 480.332 3.77194C474.674 3.80355 471.166 7.15382 471.135 12.7165Z" fill="white"/>
-            <path d="M463.855 24H460.505V1.43311H463.855V24Z" fill="white"/>
-            <path d="M456.554 7.94401H453.204C452.793 5.06784 450.517 3.77198 446.503 3.77198C443.501 3.77198 441.257 5.19426 441.257 7.46992C441.257 8.95542 442.3 9.96682 444.955 10.4409L450.486 11.3891C451.908 11.6736 452.951 11.9264 453.646 12.2109C454.31 12.4953 454.942 12.8746 455.511 13.3171C456.617 14.2021 457.281 15.4347 457.281 17.1731C457.218 22.4197 452.983 24.5689 447.578 24.5689C441.762 24.5689 437.211 22.2301 437.211 16.5725H440.561C440.656 19.8596 443.185 21.6612 447.831 21.6612C451.592 21.6612 453.931 20.1441 453.931 17.8368C453.931 15.8456 452.477 14.9606 449.727 14.4865L444.607 13.6332C441.478 13.1275 439.866 12.2741 438.76 10.6938C438.191 9.90361 437.906 8.92381 437.906 7.72277C437.906 3.51913 441.288 0.864197 446.946 0.864197C452.666 0.864197 456.27 3.29788 456.554 7.94401Z" fill="white"/>
-            <path d="M435.473 7.94401H432.123C431.712 5.06784 429.436 3.77198 425.422 3.77198C422.42 3.77198 420.176 5.19426 420.176 7.46992C420.176 8.95542 421.219 9.96682 423.873 10.4409L429.405 11.3891C430.827 11.6736 431.87 11.9264 432.565 12.2109C433.229 12.4953 433.861 12.8746 434.43 13.3171C435.536 14.2021 436.2 15.4347 436.2 17.1731C436.137 22.4197 431.901 24.5689 426.497 24.5689C420.681 24.5689 416.13 22.2301 416.13 16.5725H419.48C419.575 19.8596 422.104 21.6612 426.75 21.6612C430.511 21.6612 432.85 20.1441 432.85 17.8368C432.85 15.8456 431.396 14.9606 428.646 14.4865L423.526 13.6332C420.397 13.1275 418.785 12.2741 417.679 10.6938C417.11 9.90361 416.825 8.92381 416.825 7.72277C416.825 3.51913 420.207 0.864197 425.865 0.864197C431.585 0.864197 435.189 3.29788 435.473 7.94401Z" fill="white"/>
-            <path d="M414.262 24H395.804V1.43311H413.946V4.34089H399.154V10.8834H413.503V13.7912H399.154V21.0922H414.262V24Z" fill="white"/>
-            <path d="M392.65 24H389.11C388.92 23.7788 388.794 23.4627 388.699 23.0202C388.604 22.5777 388.509 21.4715 388.415 19.7016C388.193 15.9404 387.087 14.4233 384.053 14.4233H375.298V24H371.948V1.43311H385.918C389.837 1.43311 392.081 3.93001 392.081 7.43831C392.081 10.2197 390.817 12.2109 388.288 13.001V13.0642C390.311 13.3487 391.449 15.2135 391.575 17.8684C391.607 18.6902 391.67 19.7964 391.765 21.1555C391.86 22.5461 392.176 23.4943 392.65 24ZM384.748 4.34089H375.298V11.5155H384.654C387.308 11.5155 388.731 10.1881 388.731 7.94401C388.731 5.76317 387.403 4.37249 384.748 4.34089Z" fill="white"/>
-            <path d="M352.488 24H349.138V1.43311H360.769C365.731 1.43311 368.323 3.70876 368.323 7.9124C368.323 12.3373 365.542 14.9606 360.99 14.9606H352.488V24ZM361.148 4.34089H352.488V12.0528H360.548C363.456 12.0528 364.973 10.6622 364.973 7.97561C364.973 5.73157 363.582 4.34089 361.148 4.34089Z" fill="white"/>
-            <path d="M344.158 24H340.808V5.28908H340.745L331.958 24H328.987L320.232 5.66835H320.169V24H316.819V1.43311H321.528L330.473 20.144L339.512 1.43311H344.158V24Z" fill="white"/>
-            <path d="M311.657 24H308.307V1.43311H311.657V24Z" fill="white"/>
-            <path d="M285.276 24H281.926V14.7078L272.033 1.43311H276.3L283.664 11.7052L291.155 1.43311H295.232L285.276 14.5497V24Z" fill="white"/>
-            <path d="M271.502 24H267.963C267.773 23.7788 267.646 23.4627 267.552 23.0202C267.457 22.5777 267.362 21.4715 267.267 19.7016C267.046 15.9404 265.94 14.4233 262.906 14.4233H254.151V24H250.8V1.43311H264.77C268.689 1.43311 270.934 3.93001 270.934 7.43831C270.934 10.2197 269.669 12.2109 267.141 13.001V13.0642C269.164 13.3487 270.301 15.2135 270.428 17.8684C270.459 18.6902 270.523 19.7964 270.617 21.1555C270.712 22.5461 271.028 23.4943 271.502 24ZM263.601 4.34089H254.151V11.5155H263.506C266.161 11.5155 267.583 10.1881 267.583 7.94401C267.583 5.76317 266.256 4.37249 263.601 4.34089Z" fill="white"/>
-            <path d="M246.878 24H228.42V1.43311H246.562V4.34089H231.77V10.8834H246.119V13.7912H231.77V21.0922H246.878V24Z" fill="white"/>
-            <path d="M216.451 24H212.88L202.829 1.43311H206.622L214.744 20.5233L222.741 1.43311H226.344L216.451 24Z" fill="white"/>
-            <path d="M201.814 24H183.356V1.43311H201.498V4.34089H186.706V10.8834H201.056V13.7912H186.706V21.0922H201.814V24Z" fill="white"/>
-            <path d="M169.004 24H150.546V1.43311H168.688V4.34089H153.896V10.8834H168.246V13.7912H153.896V21.0922H169.004V24Z" fill="white"/>
-            <path d="M147.993 24H143.378L134.149 13.001L130.04 16.6357V24H126.69V1.43311H130.04V12.7798L142.651 1.43311H147.392L136.678 10.7886L147.993 24Z" fill="white"/>
-            <path d="M124.263 24H120.439L117.562 17.4259H106.5L103.624 24H100.021L110.23 1.43311H114.054L124.263 24ZM116.33 14.5181L112 4.53052L107.765 14.5181H116.33Z" fill="white"/>
-            <path d="M97.7277 24H94.3774V5.28908H94.3142L85.5276 24H82.5566L73.8017 5.66835H73.7385V24H70.3882V1.43311H75.0975L84.0421 20.144L93.0815 1.43311H97.7277V24Z" fill="white"/>
-            <path d="M56.0362 24H37.5781V1.43311H55.7202V4.34089H40.9284V10.8834H55.2777V13.7912H40.9284V21.0922H56.0362V24Z" fill="white"/>
-            <path d="M27.7242 24H24.0579L17.7998 5.28908H17.7366L11.5102 24H7.81224L0.384766 1.43311H4.01949L9.80344 19.7648H9.86665L15.9035 1.43311H19.8859L26.0807 19.7648H26.1439L31.8963 1.43311H35.373L27.7242 24Z" fill="white"/>
-        </svg>
+        <div class="studio-descriptor">
+            For Real is a branding & design that understands how to combine aesthectics, emotion, and strategy to leave a lasting impression.
+        </div>
+
         <canvas id="glCanvas"></canvas>
     </div>
 
     <div class="scroll-content">
         <div class="spacer"></div>
+        <div class="flex-sticky-header">
+            <h2 class="work-section-title">
+                Selected Work
+            </h2>
+            <h2 class="work-section-title">
+                Work with us
+            </h2>
+        </div>
+        
         <div class="grid-container">
+            <div class="grid-item">
+                <img src="images/RCP.gif">
+            </div>
+            <div class="grid-item">
+                <img src="images/oldspice-1.jpg">
+            </div> 
+            <div class="grid-item">
+                <img src="images/AT-AutoTrader_LOGO_Centered_2408021-ezgif.com-video-to-gif-converter.gif">
+            </div>
+            <div class="grid-item">
+                <img src="images/M+ney_A_gif.gif">
+            </div>
             <div class="grid-item"></div>
             <div class="grid-item"></div>
             <div class="grid-item"></div>
             <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
+        </div>
+
+        <div class="footer">
+            <div class="flex">
+                <div class="footer-logo">
+                    <svg width="3104" height="295" viewBox="0 0 3104 295" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1206.73 157.893c7.34-2.242 18.28-2.174 27.32-4.959 29.39-9.034 37.71-27.714 39.45-57.363 4.65-80.254-49.06-85.586-114.54-90.884l-296.372.068V290.04h122.247v-83.208h138.385c3.53 0 19.4 5.672 22.15 8.423 2.11 2.071 5.88 13.856 5.88 16.2v58.585h122.25v-67.076c0-5.094-2.99-20.479-4.76-25.812-9.21-27.713-39.48-31.551-64.83-34.472-.47-2.343.58-4.109 2.82-4.788Zm-68.39-29.344c-2.48.985-13.12 3.566-15.12 3.566H987.383l-2.548-2.547V79.473c41.345 2.173 85.555-2.853 126.595-.068 11.55.78 32.55 3.124 37.31 15.317 4.65 11.955 3.05 28.495-10.4 33.827ZM543.008 1.868c48.79-2.65 112.495-3.159 160.572 3.124C810.945 19.053 835.271 70.1 828.68 173.787c-3.16 49.687-24.361 86.945-72.199 104.401-60.274 22.008-220.778 21.159-283.124 4.585-72.811-19.358-90.139-66.974-89.697-137.99C384.339 33.827 441.623 7.37 543.008 1.868Zm32.277 79.812c-20.521 1.494-52.629 5.23-61.632 26.661-6.932 16.506-6.354 63.816 1.325 80.186 9.921 21.227 44.033 24.011 64.86 25.166 27.861 1.528 97.376 2.819 115.587-20.411 15.358-19.597 14.033-83.515-7.644-99.41-21.677-15.894-86.47-14.094-112.462-12.192h-.034ZM1757.42 162.681v-5.094c23-.204 52.05-7.472 62.41-30.159 7.45-16.37 7.89-56.208 2.93-73.393-12.51-43.54-73.15-46.02-110.26-49.348l-296.37.068V290.04h122.28v-83.208h138.38c2.62 0 17.74 5.094 20.15 6.996 2.11 1.698 6.15 8.966 6.15 10.834v65.378h122.28V209.38c0-3.464-4.55-15.249-6.49-18.985-11.65-22.551-38.93-24.284-61.46-27.714Zm-64.49-34.812c-2.48 1.121-14.16 4.246-16.14 4.246h-138.38V79.473H1670c2.24 0 13.83 2.615 16.89 3.498 8.32 2.411 14.67 6.996 16.1 16.132 1.73 11.14 1.39 23.672-10.06 28.766ZM2214.23 3.057v76.416h-227.54v28.868h227.54v76.416h-227.54v28.868h227.54v76.416h-351.48V3.057h351.48ZM2584.4 5.57h-186.8L2234.58 290.04h131.59l30.89-50.638 178.07-.408 5.02 1.767 27.15 49.279h138.39L2584.4 5.57Zm-147.76 160.508c4.99-10.563 44.92-90.103 50.11-90.103 3.33.034 7.85 9.51 9.62 12.532l40.46 77.571h-100.19ZM351.484 3.057v76.416H123.945v28.868h227.539v76.416H123.945v105.284H0V3.057h351.484ZM2891.75 201.738H3104v88.303h-336.23V3.057h121.43l2.55 2.547v196.134Z" fill="#fff"/></svg>
+                </div>
+                <div class="footer-message">
+                    FOR REAL is part of the <a href="/">Not Normal Group</a> 
+                </div>
+            </div>
         </div>
     </div>
     
@@ -157,6 +228,10 @@
         uniform vec2 u_textResolution;
         uniform float u_fade_progress; // Uniform for scroll-based fade
 
+        // New uniforms for the hover effect
+        uniform vec2 u_hover_pos;
+        uniform float u_hover_strength;
+
         // 2D noise function to create organic patterns
         float random(vec2 st) {
             return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
@@ -176,7 +251,7 @@
             return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
         }
 
-        #define OCTAVES 6
+        #define OCTAVES 4
         float fbm(vec2 st) {
             float value = 0.0;
             float amplitude = 0.5;
@@ -242,6 +317,15 @@
                     }
                 }
             }
+
+            // --- Hover Effect Calculation ---
+            if (u_hover_strength > 0.0) {
+                float hover_dist = distance(uv, u_hover_pos);
+                // Create a soft-edged "dent" under the cursor - increased radius and strength
+                float hover_falloff = 1.0 - smoothstep(0.0, 0.1, hover_dist); // Larger radius of influence
+                float hover_displacement = -0.025 * hover_falloff * u_hover_strength; // Stronger indent for more visibility
+                total_displacement += hover_displacement;
+            }
             
             vec2 displaced_uv = uv + total_displacement;
 
@@ -254,19 +338,19 @@
             // Layering different noise patterns for a rich, oily texture
             float noise_pattern = fbm(uv1) * 0.5 + fbm(uv2) * 0.3 + fbm(uv3) * 0.2;
             
-            // Generate iridescent colors using trigonometric functions, inspired by the reference image
+            // Reverted to original high-contrast color scheme for visibility
             float r = sin(noise_pattern * 4.0 + u_time * 0.2 + displaced_uv.x * 2.0) * 0.5 + 0.5;
             float g = cos(noise_pattern * 5.0 - u_time * 0.3 + displaced_uv.y * 3.0) * 0.5 + 0.5;
             float b = sin(noise_pattern * 6.0 + u_time * 0.1 - displaced_uv.x * 4.0) * 0.5 + 0.5;
-            
+
             vec4 liquidColor = vec4(r, g, b, 1.0);
             vec4 finalColor = liquidColor;
 
             // --- Text Overlay Calculation ---
             // Only run if the text texture has been loaded (resolution > 0)
             if (u_textResolution.x > 0.0) {
-                // Calculate the dimensions of the text box in pixels, with a max width of 800px
-                float textPixelWidth = min(800.0, u_resolution.x * 0.9);
+                // Calculate the dimensions of the text box in pixels, with a max width of 1200px
+                float textPixelWidth = min(1200.0, u_resolution.x * 0.9);
                 float textAspect = u_textResolution.x / u_textResolution.y;
                 float textPixelHeight = textPixelWidth / textAspect;
 
@@ -300,6 +384,7 @@
         const canvas = document.getElementById('glCanvas');
         const gl = canvas.getContext('webgl');
         const logoElement = document.querySelector('.logo');
+        const studioDescriptor = document.querySelector('.studio-descriptor');
 
         if (!gl) {
             alert('WebGL is not supported by your browser.');
@@ -362,6 +447,8 @@
         const textTextureUniformLocation = gl.getUniformLocation(shaderProgram, 'u_textTexture');
         const textResolutionUniformLocation = gl.getUniformLocation(shaderProgram, 'u_textResolution');
         const fadeProgressUniformLocation = gl.getUniformLocation(shaderProgram, 'u_fade_progress');
+        const hoverPosUniformLocation = gl.getUniformLocation(shaderProgram, 'u_hover_pos');
+        const hoverStrengthUniformLocation = gl.getUniformLocation(shaderProgram, 'u_hover_strength');
 
         // --- Ripple Management ---
         const MAX_RIPPLES = 10;
@@ -375,42 +462,66 @@
         let isInteracting = false; // Tracks mouse down or touch start
         let interactionStartTime = 0; // Tracks when a click/touch begins
         let lastInteractionPos = { x: 0, y: 0, time: 0 }; // For velocity calculation
+        
+        let lastRippleTime = 0; // For throttling mousemove events
+        const rippleInterval = 50; // ms, create a ripple at most every 50ms (20fps)
+
+        // --- Hover Management ---
+        let hoverPos = { x: -1, y: -1 }; // Offscreen initially
+        let targetHoverStrength = 0.0;
+        let currentHoverStrength = 0.0;
 
         // --- Scroll Fade Management ---
         let fadeProgress = 1.0;
 
         // --- Text Texture Setup ---
         let textTexture = null;
-        let textImage = new Image();
+        let textCanvas2d = null; // We'll store the 2D canvas element here
 
         function setupTextTexture() {
-            const svgElement = document.getElementById('text-svg');
-            const serializer = new XMLSerializer();
-            const svgString = serializer.serializeToString(svgElement);
+            // Create an offscreen 2D canvas to render the live text
+            textCanvas2d = document.createElement('canvas');
+            const ctx2d = textCanvas2d.getContext('2d');
+            
+            // Define text properties as requested
+            const font = 'bold 60px "Cossette Texte", sans-serif';
+            const text = 'WE MAKE EVERY IMPRESSION COUNT';
+            const padding = 50; // The fix: Add 50px of transparent padding around the text
+            
+            // Apply font styles to measure the text width accurately
+            ctx2d.font = font;
+            ctx2d.letterSpacing = '1.2px';
+            const metrics = ctx2d.measureText(text);
+            const textWidth = metrics.width;
+            const textHeight = 60 * 1.5; // Add some vertical padding for clarity
 
-            // Use base64 encoding for the SVG to use it as an image source
-            const svgBase64 = window.btoa(svgString);
-            const dataUrl = 'data:image/svg+xml;base64,' + svgBase64;
+            // Set the canvas size to fit the text perfectly, PLUS the padding
+            textCanvas2d.width = Math.ceil(textWidth) + padding * 2;
+            textCanvas2d.height = Math.ceil(textHeight) + padding * 2;
 
-            textImage.onload = function() {
-                // Now that the image is loaded, create a WebGL texture from it
-                textTexture = gl.createTexture();
-                gl.bindTexture(gl.TEXTURE_2D, textTexture);
-                
-                // Upload the image into the texture.
-                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, textImage);
+            // Re-apply styles after resizing the canvas (this is a crucial step)
+            ctx2d.font = font;
+            ctx2d.letterSpacing = '1.2px';
+            ctx2d.textAlign = 'center';
+            ctx2d.textBaseline = 'middle';
+            ctx2d.fillStyle = 'white';
+            
+            // Draw the text into the CENTER of the now larger (padded) canvas
+            ctx2d.fillText(text, textCanvas2d.width / 2, textCanvas2d.height / 2);
 
-                // Set texture parameters. Non-power-of-2 textures need clamp_to_edge.
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-                
-                // Start the render loop only after the texture is ready
-                requestAnimationFrame(render);
-            };
+            // Now, create a WebGL texture from this 2D canvas
+            textTexture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, textTexture);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, textCanvas2d);
 
-            textImage.src = dataUrl;
+            // Set texture parameters for non-power-of-2 textures
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            
+            // Start the render loop now that the texture is ready
+            requestAnimationFrame(render);
         }
 
 
@@ -463,8 +574,17 @@
         });
 
         canvas.addEventListener('mousemove', (event) => {
+            // Always track mouse position for the hover effect
+            const rect = canvas.getBoundingClientRect();
+            hoverPos.x = (event.clientX - rect.left) / canvas.clientWidth;
+            hoverPos.y = 1.0 - ((event.clientY - rect.top) / canvas.clientHeight);
+
             if (isInteracting) {
-                createRipple(event.clientX, event.clientY);
+                const now = performance.now();
+                if (now - lastRippleTime > rippleInterval) {
+                    createRipple(event.clientX, event.clientY);
+                    lastRippleTime = now;
+                }
             }
         });
 
@@ -473,6 +593,14 @@
             interactionStartTime = 0;
         });
         
+        canvas.addEventListener('mouseenter', () => {
+            targetHoverStrength = 1.0;
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            targetHoverStrength = 0.0;
+        });
+
         canvas.addEventListener('touchstart', (event) => {
             isInteracting = true;
             interactionStartTime = performance.now();
@@ -486,8 +614,12 @@
         canvas.addEventListener('touchmove', (event) => {
             event.preventDefault();
             if (isInteracting) {
-                for (let i = 0; i < event.touches.length; i++) {
-                    createRipple(event.touches[i].clientX, event.touches[i].clientY);
+                const now = performance.now();
+                if (now - lastRippleTime > rippleInterval) {
+                    for (let i = 0; i < event.touches.length; i++) {
+                        createRipple(event.touches[i].clientX, event.touches[i].clientY);
+                    }
+                    lastRippleTime = now;
                 }
             }
         }, { passive: false });
@@ -513,12 +645,28 @@
 
             logoElement.style.opacity = fadeProgress;
             logoElement.style.filter = `blur(${blurAmount}px)`;
+            studioDescriptor.style.opacity = fadeProgress;
+            studioDescriptor.style.filter = `blur(${blurAmount}px)`;
         });
 
 
         // --- Render Loop ---
+        let lastFrameTime = 0;
+        const targetFPS = 40;
+        const frameInterval = 1000 / targetFPS;
+
         function render(time) {
-            time *= 0.001; // convert time to seconds
+            requestAnimationFrame(render);
+
+            const elapsed = time - lastFrameTime;
+
+            // Throttle the frame rate
+            if (elapsed < frameInterval) {
+                return;
+            }
+            lastFrameTime = time - (elapsed % frameInterval);
+
+            const timeInSeconds = time * 0.001; // convert time to seconds
 
             // Resize canvas to match display size
             const dpr = window.devicePixelRatio || 1;
@@ -531,10 +679,16 @@
                 gl.viewport(0, 0, canvas.width, canvas.height);
             }
 
+            // Ease hover strength for a smooth transition
+            currentHoverStrength += (targetHoverStrength - currentHoverStrength) * 0.1;
+
             // Update uniforms
             gl.uniform2f(resolutionUniformLocation, canvas.width, canvas.height);
-            gl.uniform1f(timeUniformLocation, time);
+            gl.uniform1f(timeUniformLocation, timeInSeconds);
             gl.uniform1f(fadeProgressUniformLocation, fadeProgress); // Pass fade progress to shader
+            gl.uniform2f(hoverPosUniformLocation, hoverPos.x, hoverPos.y);
+            gl.uniform1f(hoverStrengthUniformLocation, currentHoverStrength);
+
 
             // Prepare ripple data for the shader
             const rippleData = new Float32Array(MAX_RIPPLES * 4);
@@ -542,7 +696,7 @@
 
             ripples.forEach((ripple, i) => {
                 // If a ripple is too old, reset its start time so the shader ignores it.
-                if (time - ripple.startTime > 7.0) { // 7s is a safe cleanup time
+                if (timeInSeconds - ripple.startTime > 7.0) { // 7s is a safe cleanup time
                     ripple.startTime = -1.0;
                 }
                 const offset = i * 4;
@@ -567,7 +721,7 @@
 
             // Update text texture uniforms if the texture is ready
             if (textTexture) {
-                gl.uniform2f(textResolutionUniformLocation, textImage.width, textImage.height);
+                gl.uniform2f(textResolutionUniformLocation, textCanvas2d.width, textCanvas2d.height);
                 
                 // Tell the shader to use texture unit 0 for u_textTexture
                 gl.activeTexture(gl.TEXTURE0);
@@ -578,7 +732,7 @@
             // Draw the scene
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
-            requestAnimationFrame(render);
+            // requestAnimationFrame(render); // Moved to the top of the function
         }
 
         // Start the process by setting up the text texture, 
@@ -587,5 +741,6 @@
     </script>
 </body>
 </html>
+
 
 
