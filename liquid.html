@@ -52,7 +52,7 @@
             position: relative;
             z-index: 2;
             background-color: transparent;
-            pointer-events: none; /* Allow clicks to pass through this container */
+            pointer-events: all; /* Allow clicks to pass through this container */
         }
 
         .spacer {
@@ -66,7 +66,7 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 0.5vw;
             pointer-events: auto; /* Re-enable pointer events for the grid content */
-            padding-top: 30px;
+            background-color: #000;
         }
 
         .grid-item {
@@ -79,6 +79,10 @@
             height: 100%;
             object-fit: cover;
             display: block;
+        }
+
+        .grid-item:hover img{
+            opacity: 0.3;
         }
 
         .studio-descriptor {
@@ -96,6 +100,10 @@
             z-index: 10;
             pointer-events: none;
             transition: opacity 0.1s ease-out, filter 0.1s ease-out;
+        }
+
+        .footer {
+            background-color: #000;
         }
 
         .footer .flex{
@@ -124,7 +132,7 @@
         }
 
         .work-section-title {
-            font-size: 2vw;
+            font-size: 1.1vw;
             color: #fff;
             font-family: "Cossette Texte", sans-serif;
         }
@@ -136,6 +144,7 @@
             top: 10px;
             display: flex;
             justify-content: space-between;
+            z-index: 1000;
         }
 
     </style>
@@ -166,18 +175,19 @@
         <canvas id="glCanvas"></canvas>
     </div>
 
+    <div class="spacer"></div> 
+    
     <div class="scroll-content">
-        <div class="spacer"></div>
         <div class="flex-sticky-header">
-            <h2 class="work-section-title">
+            <a class="work-section-title">
                 Work
-            </h2>
-            <h2 class="work-section-title">
+            </a>
+            <a class="work-section-title">
                 About
-            </h2>
-            <h2 class="work-section-title">
+            </a>
+            <a class="work-section-title">
                 Contact
-            </h2>
+            </a>
         </div>
         
         <div class="grid-container">

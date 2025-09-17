@@ -25,6 +25,10 @@ header {
     display: flex;
 }
 
+.grid-container {
+    background-color: #000;
+}
+
 .fr-header-inner > div {
     width: 33%;
     align-items: center;
