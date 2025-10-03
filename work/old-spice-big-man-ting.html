@@ -38,9 +38,7 @@
         }
 
         .logo {
-            position: absolute;
-            top: 0;
-            left: 0;
+
             width: 100%;
             height: auto;
             z-index: 10;
@@ -59,6 +57,10 @@
             height: 100vh; /* Pushes the grid down, making space for the initial view */
         }
 
+        .spacer.case-study {
+            height: 90vh;
+        }
+
         .grid-container {
             width: 100vw;
             margin: auto auto;
@@ -69,11 +71,24 @@
             background-color: #000;
         }
 
+        .grid-container.case-study {
+            display: block;
+            grid-auto-columns: none;
+            gap: none;
+        }
+
+        .grid-container.case-study .full-width {
+            width: 100%;
+        }
+
+        .grid-container.case-study .full-width img{
+            width: 100%;
+        }
+
         .grid-item {
             background-color: #000;
             aspect-ratio: 16 / 9;
             position: relative;
-            transition: all ease-in-out 0.3s;
         }
 
         .grid-item img {
@@ -163,21 +178,83 @@
             left: 20px;
         }
 
+        .two-col {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .two-col .col{
+            width: 49.5%;
+        }
+
+        .two-col .col img{
+            width: 100%;
+        }
+
+        .full-width {
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        .project-description {
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            transform: translate(-50%, auto);
+            color: #fff;
+            display: flex;
+            width: 100%;
+        }
+
+        .project-description h1 {
+            color: #fff;
+            line-height: 1;
+            margin: 0;
+        }
+
+        .project-description h1.client {
+            color: #848484;
+        }
+
+        .project-description p {
+            color: #fff;
+        }
+
+        .cols {
+            width: 50%;
+        }
+
+        .cols.description p{
+            line-height: 1.4;
+            margin-right: 150px;
+        }
+
         a {
             text-decoration: none;
         }
 
-        .grid-item:hover .project-detail {
-            opacity: 1;
-            transform: translateY(0);
+        .col.padd {
+            position: relative;
         }
 
-        .project-detail {
-            opacity: 0;
-            transform: translateY(-10px);
-            margin-left: 20px;
-            display: inline-block;
-            transition: all ease-in-out 0.3s;
+        .col.padd img{
+            width: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .video-background iframe{
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
         }
 
     </style>
@@ -200,17 +277,6 @@
             </clipPath>
             </defs>
         </svg>
-        
-        <div class="studio-descriptor">
-            For Real is a branding & design agency that understands how to combine aesthetics, emotion, and strategy to leave a lasting impression with every impression.
-        </div>
-
-        <canvas id="glCanvas"></canvas>
-    </div>
-
-    <div class="spacer"></div> 
-    
-    <div class="scroll-content">
         <div class="flex-sticky-header">
             <a href="/" class="work-section-title">
                 Work
@@ -222,33 +288,57 @@
                 Contact
             </a>
         </div>
-        
-        <div class="grid-container">
-            <a href="/work/autotrader-found-at.html" class="grid-item">
-                <img src="images/AT-AutoTrader_LOGO_Centered_2408021-ezgif.com-video-to-gif-converter.gif">
-                <div class="project-title">AutoTrader <span class="project-detail">Campaign Design & Identity</span></div>
-            </a>
-            <a href="/work/old-spice-big-man-ting.html" class="grid-item">
-                <img src="images/oldspice-1.jpg">
-                <div class="project-title">Old Spice <span class="project-detail">Campaign Design & Art Direction</span></div>
-            </a> 
-            <div class="grid-item">
-                <img src="images/M+ney_A_gif.gif">
-                <div class="project-title">MoneyPlus <span class="project-detail">Brand Identity & Repositioning</span></div>
+        <div class="project-description">
+            <div class="cols">
+                <h1>Finding new life in a British classic</h1>
+                <h1 class="client">AutoTrader</h1>
             </div>
-            <div class="grid-item">
-                <img src="images/betmgm_kv.jpg">
-                <div class="project-title">BetMGM <span class="project-detail">Campaign Design & Art Direction</span></div>
-            </div>
-            <a href="/work/rcp-rebrand.html" class="grid-item">
-                <img src="images/RCP.gif">
-                <div class="project-title">RCP <span class="project-detail">Brand Identity & Repositioning</span></div>
-            </a>
-            <div class="grid-item">
-                <img src="images/NNG_logo.gif">
-                <div class="project-title">Not Normal Group <span class="project-detail">Brand Identity</span></div>
+            <div class="cols description">
+                <p>We helped Recipe Advertising find their true selves and got to the heart of what really matters: the love of advertising is what drives them forward and so we built a positioning and design system around that. We rebranded as RCP and doubled down on love. The identity consists of a bold tone of voice, a logo which symbolises their bonds with their clients and an everlasting love to the work they do. We created a brand film that sets them apart, that expresses their trueselves and places a stake in the ground for the industry.</p>
             </div>
         </div>
+    </div>
+
+    <div class="spacer case-study"></div> 
+    
+    <div class="scroll-content">
+        <div class="grid-container case-study">
+            <div class="full-width">
+                <div class="video-background">
+                    <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1123761028?autoplay=1&loop=1&background=1" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+                </div>
+            </div>
+            <div class="two-col">
+                <div class="col"><img src="/images/at/at-2.jpg"></div>
+                <div class="col"><img src="/images/at/at-3.jpg"></div>
+            </div>
+            <div class="full-width">
+                <div class="video-background">
+                    <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1123761523?autoplay=1&loop=1&background=1" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+                </div>
+            </div>
+            <div class="full-width">
+                <div class="video-background">
+                    <img src="/images/at/at-5.jpg">
+                </div>
+            </div>
+            <div class="full-width">
+                <div class="video-background">
+                    <img src="/images/at/at-6.jpg">
+                </div>
+            </div>
+            <div class="full-width">
+                <div class="video-background">
+                    <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1123761327?autoplay=1&loop=1&background=1" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+                </div>
+            </div>
+            <div class="two-col">
+                <div class="col"><img src="/images/at/at-7.jpg"></div>
+                <div class="col"><img src="/images/at/at-8.jpg"></div>
+            </div>
+        </div>
+
+        
 
         <div class="footer">
             <div class="flex">
