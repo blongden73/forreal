@@ -269,6 +269,37 @@
             z-index: 0;
         }
 
+        .quick-menu {
+            display: flex;
+            flex-direction: row;
+            margin: 2vh auto;
+            position: fixed;
+            bottom: 100px;
+            z-index: 100000;
+            left: 50%;
+            transform: translate(-50%, 50px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all ease-in-out 0.3s;
+        }
+
+        .quick-menu.active {
+            opacity: 1;
+            pointer-events: all;
+            transform: translate(-50%, 0px);
+        }
+
+        .quick-menu .grid-item {
+            width: 130px;
+            margin-right: 10px;
+            transition: all ease-in-out 0.3s;
+        }
+
+        .quick-menu .grid-item:hover {
+            transform: translateY(-10px);
+            width: 150px;
+        }
+
     </style>
 </head>
 <body>
@@ -300,8 +331,29 @@
         </div>
     </div>
 
+    <div class="quick-menu">        
+        <a href="/work/autotrader-found-at.html" class="grid-item">
+            <img src="../images/AT-AutoTrader_LOGO_Centered_2408021-ezgif.com-video-to-gif-converter.gif">
+        </a>
+        <a href="/work/old-spice-big-man-ting.html" class="grid-item">
+            <img src="../images/oldspice-1.jpg">
+        </a> 
+        <a href="/work/money-plus-rebrand.html" class="grid-item">
+            <img src="../images/M+ney_A_gif.gif">
+        </a>
+        <a href="/work/betmgm-launch-design.html" class="grid-item">
+            <img src="../images/betmgm_kv.jpg">
+        </a>
+        <a href="/work/rcp-rebrand.html" class="grid-item">
+            <img src="../images/RCP.gif">
+        </a>
+        <div class="grid-item">
+            <img src="../images/NNG_logo.gif">
+        </div>
+    </div>
+
     <div class="flex-sticky-header">
-        <a href="/forreal/" class="work-section-title">
+        <a href="/forreal/" class="work-section-title work-quick-menu">
             Work
         </a>
         <a href="/about" class="work-section-title">
@@ -364,6 +416,51 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Select the elements
+        const workQuickMenus = document.querySelectorAll('.work-quick-menu');
+        const quickMenu = document.querySelector('.quick-menu');
+
+        let timeoutId = null;
+
+        // Function to add the active class
+        function activateQuickMenu() {
+        if (!quickMenu) return;
+        quickMenu.classList.add('active');
+
+        // Clear any pending timeout to remove
+        clearTimeout(timeoutId);
+        }
+
+        // Function to remove the active class after 20s if not hovered
+        function deactivateQuickMenuWithDelay() {
+        if (!quickMenu) return;
+        
+        // Clear any previous timeout
+        clearTimeout(timeoutId);
+        
+        // Start a new 20s timeout
+        timeoutId = setTimeout(() => {
+            // Only remove if neither element is hovered
+            const isHovered = [...workQuickMenus].some(menu => menu.matches(':hover')) || quickMenu.matches(':hover');
+            if (!isHovered) {
+            quickMenu.classList.remove('active');
+            }
+        }, 3000);
+        }
+
+        // Add hover listeners
+        workQuickMenus.forEach(menu => {
+        menu.addEventListener('mouseenter', activateQuickMenu);
+        menu.addEventListener('mouseleave', deactivateQuickMenuWithDelay);
+        });
+
+        if (quickMenu) {
+        quickMenu.addEventListener('mouseenter', activateQuickMenu);
+        quickMenu.addEventListener('mouseleave', deactivateQuickMenuWithDelay);
+        }
+    </script>
     
     <!-- Vertex Shader: Positions the vertices of the plane we draw on. -->
     <script id="vertex-shader" type="x-shader/x-vertex">
