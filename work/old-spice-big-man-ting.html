@@ -38,10 +38,13 @@
         }
 
         .logo {
-
-            width: 100%;
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            width: 90%;
             height: auto;
             z-index: 10;
+            transform: translateX(-50%);
             pointer-events: none; /* Allows clicks to go through to the canvas */
             transition: opacity 0.1s ease-out, filter 0.1s ease-out; /* Smooth transitions */
         }
@@ -58,7 +61,7 @@
         }
 
         .spacer.case-study {
-            height: 90vh;
+            height: 75vh;
         }
 
         .grid-container {
@@ -157,13 +160,22 @@
         }
 
         .flex-sticky-header {
-            width: 98vw;
+            width: 30vw;
             margin: 2vh auto;
-            position: sticky;
-            top: 10px;
+            position: fixed;
+            bottom: 30px;
             display: flex;
             justify-content: space-between;
-            z-index: 1000;
+            z-index: 100000;
+            background-color: #57575755;
+            left: 50%;
+            transform: translateX(-50%);
+            backdrop-filter: blur(20px);
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 20px;
+            padding-right: 20px;
+            border-radius: 8px;
         }
 
         .project-title {
@@ -199,11 +211,11 @@
         .project-description {
             position: absolute;
             top: 50%;
-            left: 20px;
-            transform: translate(-50%, auto);
+            left: 50%;
+            transform: translate(-50%, -50%);
             color: #fff;
             display: flex;
-            width: 100%;
+            width: 90%;
         }
 
         .project-description h1 {
@@ -277,17 +289,6 @@
             </clipPath>
             </defs>
         </svg>
-        <div class="flex-sticky-header">
-            <a href="/forreal/" class="work-section-title">
-                Work
-            </a>
-            <a href="/about" class="work-section-title">
-                About
-            </a>
-            <a class="work-section-title">
-                Contact
-            </a>
-        </div>
         <div class="project-description">
             <div class="cols">
                 <h1>Finding new life in a British classic</h1>
@@ -299,42 +300,55 @@
         </div>
     </div>
 
+    <div class="flex-sticky-header">
+        <a href="/forreal/" class="work-section-title">
+            Work
+        </a>
+        <a href="/about" class="work-section-title">
+            About
+        </a>
+        <a class="work-section-title">
+            Contact
+        </a>
+    </div>
+
     <div class="spacer case-study"></div> 
     
     <div class="scroll-content">
         <div class="grid-container case-study">
             <div class="full-width">
                 <div class="video-background">
-                    <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1123761028?autoplay=1&loop=1&background=1" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+                    <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1126058774?autoplay=1&loop=1&background=1" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
                 </div>
             </div>
             <div class="two-col">
-                <div class="col"><img src="../images/at/at-2.jpg"></div>
-                <div class="col"><img src="../images/at/at-3.jpg"></div>
+                <div class="col"><img src="../images/OS/os-1.jpg"></div>
+                <div class="col"><img src="../images/OS/os-2.jpg"></div>
             </div>
             <div class="full-width">
                 <div class="video-background">
-                    <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1123761523?autoplay=1&loop=1&background=1" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+                    <img src="../images/OS/os-3.jpg">
                 </div>
             </div>
             <div class="full-width">
                 <div class="video-background">
-                    <img src="../images/at/at-5.jpg">
+                    <img src="../images/OS/os-4.jpg">
                 </div>
             </div>
             <div class="full-width">
                 <div class="video-background">
-                    <img src="../images/at/at-6.jpg">
+                    <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1126058609?autoplay=1&loop=1&background=1" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
                 </div>
             </div>
             <div class="full-width">
                 <div class="video-background">
-                    <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1123761327?autoplay=1&loop=1&background=1" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+                    <img src="../images/OS/os-5.jpg">
                 </div>
             </div>
-            <div class="two-col">
-                <div class="col"><img src="../images/at/at-7.jpg"></div>
-                <div class="col"><img src="../images/at/at-8.jpg"></div>
+            <div class="full-width">
+                <div class="video-background">
+                    <img src="../images/OS/os-6.jpg">
+                </div>
             </div>
         </div>
 
