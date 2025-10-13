@@ -410,6 +410,26 @@
     </div>
 
     <script>
+        // Select the logo element
+        const logo = document.querySelector('.logo');
+
+        // Adjust how much faster the logo scrolls away
+        const scrollSpeedMultiplier = 1.5;
+
+        window.addEventListener('scroll', () => {
+        if (!logo) return;
+
+        const scrollY = window.scrollY;
+
+        // Combine translateY for scroll effect with existing translateX(-50%) for centering
+        logo.style.transform = `translateX(-50%) translateY(${-scrollY * scrollSpeedMultiplier}px)`;
+
+        // Optional: make movement smoother
+        logo.style.transition = 'transform 0.1s ease-out';
+        });
+    </script>
+
+    <script>
         // Select the elements
         const workQuickMenus = document.querySelectorAll('.work-quick-menu');
         const quickMenu = document.querySelector('.quick-menu');
