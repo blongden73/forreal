@@ -300,6 +300,25 @@
             width: 150px;
         }
 
+        .sticky-logo {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            z-index: 1000;
+            width: 200px;
+            transform: translateY(-100px);
+            transition: all ease-in-out 0.3s;
+        }
+
+        .sticky-logo.active {
+            transform: translateY(0);
+        }
+
+        .sticky-logo svg {
+            width: 100%;
+            height: auto;
+        }
+
     </style>
 </head>
 <body>
@@ -408,6 +427,27 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Select the element
+        const stickyLogo = document.querySelector('.sticky-logo');
+
+        // How far to scroll before activating (in pixels)
+        const scrollThreshold = 300; // adjust as needed
+
+        window.addEventListener('scroll', () => {
+        if (!stickyLogo) return;
+
+        const scrollY = window.scrollY;
+
+        // Add or remove "active" class based on scroll position
+        if (scrollY > scrollThreshold) {
+            stickyLogo.classList.add('active');
+        } else {
+            stickyLogo.classList.remove('active');
+        }
+        });
+    </script>
 
     <script>
         // Select the logo element
