@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cossette+Texte:wght@400;700&family=Geologica:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cossette+Texte:wght@400;700&family=Geologica:wght@100..900&family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
     <title>For Real | A branding & design agency that makes every impression count</title>
     <style>
         /* Basic styles to make the canvas fullscreen and remove scrollbars */
@@ -64,6 +64,10 @@
             height: 75vh;
         }
 
+        .spacer.about {
+            height: 30vh;
+        }
+
         .grid-container {
             width: 100vw;
             margin: auto auto;
@@ -72,6 +76,10 @@
             gap: 0.5vw;
             pointer-events: auto; /* Re-enable pointer events for the grid content */
             background-color: #000;
+        }
+
+        .grid-container.about {
+            background-color: #F0EDE9;
         }
 
         .grid-container.case-study {
@@ -319,9 +327,60 @@
             height: auto;
         }
 
+        .about-text {
+            font-family: "Mona Sans", sans-serif;
+            font-size: 26px;
+            padding-bottom: 100px;
+            color: #787775;
+        }
+
+        .about-text span {
+            font-weight: 600;
+            display: block;
+        }
+
+        body.about {
+            background-color: #F0EDE9;
+        }
+
+        .about .col {
+            width: 42.3%;
+            padding-right: 3.4%;
+        }
+
+        .about .stacked {
+            width: 42.3%;
+            padding-right: 3.4%;
+            padding-bottom: 100px;
+        }
+
+        .about .col.left {
+            padding-left: 5%;
+            font-family: "Mona Sans", sans-serif;
+            color: #787775;
+            text-transform: uppercase;
+        }
+
+        .stacked .about-text {
+            padding-bottom: 30px;
+        }
+
+        .about-video {
+            padding-bottom: 100px;
+        }
+
+        .about-text.flex {
+            display: flex;
+        }
+
+        .about-text.flex .flex-col {
+            font-size: 18px;
+            margin-right: 20px;
+        }
+
     </style>
 </head>
-<body>
+<body class="about">
     <div class="fixed-background">
         <svg class="logo" viewBox="0 0 3104 295" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_619_14)">
@@ -339,15 +398,6 @@
             </clipPath>
             </defs>
         </svg>
-        <div class="project-description">
-            <div class="cols">
-                <h1>Grime never smelt so good</h1>
-                <h1 class="client">Old Spice</h1>
-            </div>
-            <div class="cols description">
-                <!-- <p>We helped Recipe Advertising find their true selves and got to the heart of what really matters: the love of advertising is what drives them forward and so we built a positioning and design system around that. We rebranded as RCP and doubled down on love. The identity consists of a bold tone of voice, a logo which symbolises their bonds with their clients and an everlasting love to the work they do. We created a brand film that sets them apart, that expresses their trueselves and places a stake in the ground for the industry.</p> -->
-            </div>
-        </div>
     </div>
 
     <div class="quick-menu">        
@@ -383,46 +433,94 @@
         </a>
     </div>
 
-    <div class="spacer case-study"></div> 
+    <div class="spacer case-study about"></div> 
 
     <div class="sticky-logo">
         <svg width="3104" height="295" viewBox="0 0 3104 295" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1206.73 157.893c7.34-2.242 18.28-2.174 27.32-4.959 29.39-9.034 37.71-27.714 39.45-57.363 4.65-80.254-49.06-85.586-114.54-90.884l-296.372.068V290.04h122.247v-83.208h138.385c3.53 0 19.4 5.672 22.15 8.423 2.11 2.071 5.88 13.856 5.88 16.2v58.585h122.25v-67.076c0-5.094-2.99-20.479-4.76-25.812-9.21-27.713-39.48-31.551-64.83-34.472-.47-2.343.58-4.109 2.82-4.788Zm-68.39-29.344c-2.48.985-13.12 3.566-15.12 3.566H987.383l-2.548-2.547V79.473c41.345 2.173 85.555-2.853 126.595-.068 11.55.78 32.55 3.124 37.31 15.317 4.65 11.955 3.05 28.495-10.4 33.827ZM543.008 1.868c48.79-2.65 112.495-3.159 160.572 3.124C810.945 19.053 835.271 70.1 828.68 173.787c-3.16 49.687-24.361 86.945-72.199 104.401-60.274 22.008-220.778 21.159-283.124 4.585-72.811-19.358-90.139-66.974-89.697-137.99C384.339 33.827 441.623 7.37 543.008 1.868Zm32.277 79.812c-20.521 1.494-52.629 5.23-61.632 26.661-6.932 16.506-6.354 63.816 1.325 80.186 9.921 21.227 44.033 24.011 64.86 25.166 27.861 1.528 97.376 2.819 115.587-20.411 15.358-19.597 14.033-83.515-7.644-99.41-21.677-15.894-86.47-14.094-112.462-12.192h-.034ZM1757.42 162.681v-5.094c23-.204 52.05-7.472 62.41-30.159 7.45-16.37 7.89-56.208 2.93-73.393-12.51-43.54-73.15-46.02-110.26-49.348l-296.37.068V290.04h122.28v-83.208h138.38c2.62 0 17.74 5.094 20.15 6.996 2.11 1.698 6.15 8.966 6.15 10.834v65.378h122.28V209.38c0-3.464-4.55-15.249-6.49-18.985-11.65-22.551-38.93-24.284-61.46-27.714Zm-64.49-34.812c-2.48 1.121-14.16 4.246-16.14 4.246h-138.38V79.473H1670c2.24 0 13.83 2.615 16.89 3.498 8.32 2.411 14.67 6.996 16.1 16.132 1.73 11.14 1.39 23.672-10.06 28.766ZM2214.23 3.057v76.416h-227.54v28.868h227.54v76.416h-227.54v28.868h227.54v76.416h-351.48V3.057h351.48ZM2584.4 5.57h-186.8L2234.58 290.04h131.59l30.89-50.638 178.07-.408 5.02 1.767 27.15 49.279h138.39L2584.4 5.57Zm-147.76 160.508c4.99-10.563 44.92-90.103 50.11-90.103 3.33.034 7.85 9.51 9.62 12.532l40.46 77.571h-100.19ZM351.484 3.057v76.416H123.945v28.868h227.539v76.416H123.945v105.284H0V3.057h351.484ZM2891.75 201.738H3104v88.303h-336.23V3.057h121.43l2.55 2.547v196.134Z" fill="#fff"/></svg>
     </div>
     
     <div class="scroll-content">
-        <div class="grid-container case-study">
-            <div class="full-width">
+        <div class="grid-container case-study about">
+            <div class="two-col">
+                <div class="col left">About</div>
+                <div class="col about-text">For Real is a branding and design studio that combines principals of strategy, aesthetics and emotion to build brands that cut through and leave a lasting impression with every impression.
+                    <br /><br />
+                    In a world where there is a lot of fluff, fake, and disconnection from reality.
+                    <br /><br />
+                    We started For Real with a desire to build brands that connect with real people in the real world: brands that are authentic, human and effective.</div>
+            </div>
+            <div class="two-col">
+                <div class="col left">What we do</div>
+                <div class="col about-text flex">
+                    <div class="flex-col">
+                        Brand Strategy
+                        Consumer Insights
+                        Brand Positioning
+                        Brand Architecture
+                        Category Definition
+                        Culture & Engagement
+                        Go-to-Market Strategy
+                        Research & Testing
+                    </div>
+                    <div class="flex-col">
+                        Brand Design
+                        Naming
+                        Verbal Identity
+                        Brand Guidelines
+                        Graphic Design
+                        Wayfinding
+                        Motion Design
+                        Packaging
+                    </div>
+                    <div class="flex-col">
+                        Brand Production
+                        Campaign Design
+                        Tactical Campaigns
+                        Photography
+                        Social Design
+                        Digital Production
+                        Website Design
+                        Website Development
+                    </div>
+                </div>
+            </div>
+            <div class="full-width about-video">
                 <div class="video-background">
-                    <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1126058774?autoplay=1&loop=1&background=1" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+                    <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1126125764?autoplay=1&loop=1&background=1" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
                 </div>
             </div>
             <div class="two-col">
-                <div class="col"><img src="../images/OS/os-1.jpg"></div>
-                <div class="col"><img src="../images/OS/os-2.jpg"></div>
-            </div>
-            <div class="full-width">
-                <div class="video-background">
-                    <img src="../images/OS/os-3.jpg">
+                <div class="col left">What we beleive</div>
+                <div class="stacked">
+                    <div class="about-text">
+                        <span>Real Strategy</span>
+                        Ideas that work as hard as they look.
+                    </div>
+                    <div class="about-text">
+                        <span>Real People</span>
+                        Humanistic design with empathy, nuance, and emotion.
+                    </div>
+                    <div class="about-text">
+                        <span>Real Expression</span>
+                        An artistic approach that brings freedom and conceptual thinking to design.
+                    </div>
+                    <div class="about-text">
+                        <span>Real Talk</span>
+                        Straightforward, curious, collaborative.
+                    </div>
+                    <div class="about-text">
+                        <span>Real Impact</span>
+                        We combine strategy and emotion to create brands that resonate in the real world.
+                    </div>
                 </div>
             </div>
-            <div class="full-width">
-                <div class="video-background">
-                    <img src="../images/OS/os-4.jpg">
-                </div>
+            <div class="two-col">
+                <div class="col left">Where we are</div>
+                <div class="col about-text">We have a global perspective</div>
             </div>
             <div class="full-width">
                 <div class="video-background">
-                    <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1126058609?autoplay=1&loop=1&background=1" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
-                </div>
-            </div>
-            <div class="full-width">
-                <div class="video-background">
-                    <img src="../images/OS/os-5.jpg">
-                </div>
-            </div>
-            <div class="full-width">
-                <div class="video-background">
-                    <img src="../images/OS/os-6.jpg">
+                    <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1130959854?autoplay=1&loop=1&background=1" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
                 </div>
             </div>
         </div>
