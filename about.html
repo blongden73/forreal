@@ -377,6 +377,183 @@
             font-size: 18px;
             margin-right: 20px;
         }
+/* =================================================================== */
+/* MOBILE RESPONSIVE STYLES                        */
+/* =================================================================== */
+
+@media (max-width: 768px) {
+
+.spacer.about {
+    height: 15vh;
+}
+
+/* Reduce top position for logo */
+.logo {
+    top: 20px;
+}
+
+/* Stack grid to a single column */
+.grid-container {
+    grid-template-columns: 1fr;
+    gap: 1vw; /* Use vw for gap, or fixed px like 5px */
+    padding-left: 1vw; /* Add padding to prevent sticking to edge */
+    padding-right: 1vw;
+}
+
+.grid-container.case-study { 
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+    padding-bottom: 20px;
+}
+
+/* Adjust descriptor font and padding */
+.studio-descriptor {
+    font-size: 18px;
+    bottom: 15px;
+    left: 15px;
+    width: calc(100% - 30px);
+}
+
+/* Stack footer and center content */
+.footer {
+    padding: 40px 0;
+}
+
+.footer .flex {
+    flex-direction: column; /* Stack logo and message */
+    gap: 30px; /* Add space between stacked items */
+    width: 90vw;
+}
+
+.footer .flex .footer-logo {
+    width: 200px; /* Make logo smaller */
+}
+
+.footer .flex .footer-message {
+    text-align: center; /* Center footer text */
+    font-size: 14px;
+}
+
+/* Use a fixed, readable font size for titles */
+.work-section-title {
+    font-size: 16px; /* vw unit becomes too small */
+    padding: 20px;
+}
+
+/* Make sticky header wider and position closer to bottom */
+.flex-sticky-header {
+    width: 90vw; /* Take up more screen width */
+    min-width: 0; /* Reset min-width */
+    bottom: 15px; /* A bit closer to the bottom edge */
+    padding: 8px 15px;
+}
+
+/* Stack two-column layouts */
+.two-col {
+    flex-direction: column; /* Stack columns */
+    gap: 1vw;
+}
+
+.two-col .col {
+    width: 100%; /* Make columns full-width */
+}
+
+/* Stack project description and remove large margins */
+.project-description {
+    flex-direction: column; /* Stack title/client and description */
+    width: 90%;
+    position: relative; /* Change to relative for in-page flow */
+    transform: none;
+    top: 0;
+    left: 0;
+    padding: 20px 0; /* Add padding */
+    gap: 15px;
+}
+
+.cols {
+    width: 100%; /* Make each part full-width */
+}
+
+.cols.description p {
+    margin-right: 0; /* Remove the large desktop margin */
+    font-size: 16px; /* Ensure text is readable */
+    line-height: 1.5;
+}
+
+.project-description h1 {
+    font-size: 28px; /* Adjust heading size for mobile */
+}
+
+.col.padd img {
+    width: 70%; /* Make padded image a bit larger */
+}
+
+/* Adjust quick menu for mobile */
+.quick-menu {
+    bottom: 80px; /* Position above the new sticky header */
+    width: 90vw;
+    justify-content: center;
+    flex-wrap: wrap; /* Allow items to wrap if needed */
+    gap: 5px;
+}
+
+.quick-menu .grid-item {
+    width: 100px; /* Make items smaller */
+    margin-right: 5px;
+}
+
+.quick-menu .grid-item:hover {
+    transform: translateY(-5px); /* Less dramatic hover */
+    width: 105px;
+}
+
+/* Adjust sticky logo size and position */
+.sticky-logo {
+    width: 150px; /* Smaller logo on mobile */
+    top: 15px;
+    left: 15px;
+}
+
+/* Adjust 'About' page typography and layout */
+.about-text {
+    font-size: 20px; /* Smaller font for mobile */
+    padding-bottom: 50px;
+}
+
+/* Stack 'About' page columns */
+.about .col,
+.about .stacked {
+    width: 100%; /* Full width for stacked content */
+    padding-right: 0; /* Remove side padding */
+    padding-bottom: 50px;
+}
+
+.about .col.left {
+    padding-left: 0%;
+    padding-right: 0%; /* Add matching right padding */
+}
+
+.stacked .about-text {
+    padding-bottom: 20px;
+}
+
+.about-video {
+    padding-bottom: 50px;
+}
+
+/* Stack inner flex columns */
+.about-text.flex {
+    flex-direction: column; /* Stack the flex columns */
+    gap: 20px;
+}
+
+.about-text.flex .flex-col {
+    margin-right: 0; /* Remove margin */
+    font-size: 16px;
+}
+
+}
 
     </style>
 </head>
@@ -443,12 +620,14 @@
         <div class="grid-container case-study about">
             <div class="two-col">
                 <div class="col left">About</div>
-                <div class="col about-text">For Real is a branding and design studio that combines principals of strategy, aesthetics and emotion to build brands that cut through and leave a lasting impression with every impression.
+                <div class="col about-text">The world doesn’t need more logos. It needs brands that mean something.
                     <br /><br />
-                    In a world where there is a lot of fluff, fake, and disconnection from reality.
+                    We believe the most powerful brands start with truth — not trends. We build from what’s real: the  people behind the business, the purpose behind the product, and the emotion behind the idea. Because when brands are grounded in something real, they connect in ways that last.
                     <br /><br />
-                    We started For Real with a desire to build brands that connect with real people in the real world: brands that are authentic, human and effective.</div>
-            </div>
+                    We don’t do empty aesthetics or strategy for strategy’s sake. We craft identities that move people — brands that can live and breathe in the real world, not just exist in decks and moodboards.
+                    <br /><br />
+                    For Real is where substance shapes style, and where every detail serves a purpose. Because real brands don’t just look good — they feel real.</div>
+                </div>
             <div class="two-col">
                 <div class="col left">What we do</div>
                 <div class="col about-text flex">
@@ -514,10 +693,10 @@
                     </div>
                 </div>
             </div>
-            <div class="two-col">
+            <!-- <div class="two-col">
                 <div class="col left">Where we are</div>
                 <div class="col about-text">We have a global perspective</div>
-            </div>
+            </div> -->
             <div class="full-width">
                 <div class="video-background">
                     <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1130959854?autoplay=1&loop=1&background=1" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
