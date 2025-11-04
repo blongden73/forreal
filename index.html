@@ -9,206 +9,575 @@
     <title>For Real | A branding & design agency that makes every impression count</title>
     <style>
         /* Basic styles to make the canvas fullscreen and remove scrollbars */
-        html, body {
-            margin: 0;
-            padding: 0;
-            /* overflow: hidden; */ /* Allow scrolling now */
-            height: 100%;
-            background-color: #000;
-            font-family: "Cossette Texte", sans-serif;
-        }
+html, body {
+    margin: 0;
+    padding: 0;
+    /* overflow: hidden; */ /* Allow scrolling now */
+    /* height: 100%; */ /* This was preventing the body from expanding to content height */
+    background-color: #000;
+    font-family: "Cossette Texte", sans-serif;
+    /* Improve text rendering on all devices */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 
-        .geo {
-            font-family: "Geologica", sans-serif;
-        }
+.geo {
+    font-family: "Geologica", sans-serif;
+}
 
-        .fixed-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
+.fixed-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
 
-        canvas {
-            display: block;
-            width: 100vw;
-            height: 100vh;
-        }
+canvas {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+}
 
-        .logo {
-            position: absolute;
-            top: 30px;
-            left: 50%;
-            width: 90%;
-            height: auto;
-            z-index: 10;
-            transform: translateX(-50%);
-            pointer-events: none; /* Allows clicks to go through to the canvas */
-            transition: opacity 0.1s ease-out, filter 0.1s ease-out; /* Smooth transitions */
-        }
+.logo {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    width: 90%;
+    max-width: 600px; /* Add max-width for very large screens */
+    height: auto;
+    z-index: 10;
+    transform: translateX(-50%);
+    pointer-events: none; /* Allows clicks to go through to the canvas */
+    transition: opacity 0.1s ease-out, filter 0.1s ease-out; /* Smooth transitions */
+}
 
-        .scroll-content {
-            position: relative;
-            z-index: 2;
-            background-color: transparent;
-            pointer-events: all; /* Allow clicks to pass through this container */
-        }
+.scroll-content {
+    position: relative;
+    z-index: 2;
+    background-color: transparent;
+    pointer-events: all; /* Allow clicks to pass through this container */
+}
 
-        .spacer {
-            height: 100vh; /* Pushes the grid down, making space for the initial view */
-        }
+.spacer {
+    height: 100vh; /* Pushes the grid down, making space for the initial view */
+}
 
-        .grid-container {
-            width: 100vw;
-            margin: auto auto;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.5vw;
-            pointer-events: auto; /* Re-enable pointer events for the grid content */
-            background-color: #000;
-        }
+.spacer.case-study {
+    height: 75vh;
+}
 
-        .grid-item {
-            background-color: #000;
-            aspect-ratio: 16 / 9;
-            position: relative;
-            transition: all ease-in-out 0.3s;
-        }
+.spacer.about {
+    height: 30vh;
+}
 
-        .grid-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
+.grid-container {
+    width: 100vw;
+    margin: auto auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5vw;
+    pointer-events: auto; /* Re-enable pointer events for the grid content */
+    background-color: #000;
+    box-sizing: border-box; /* Ensure padding/borders are included in width */
+}
 
-        .grid-item:hover img{
-            opacity: 0.3;
-        }
+.grid-container.about {
+    background-color: #F0EDE9;
+}
 
-        .studio-descriptor {
-            font-family: "Cossette Texte", sans-serif;
-            font-weight: 400;
-            font-style: normal;
-            position: absolute;
-            bottom: 70px;
-            left: 20px;
-            color: white;
-            font-size: 18px;
-            padding-top: 10px;
-            width: 98%;
-            z-index: 10;
-            pointer-events: none;
-            transition: opacity 0.1s ease-out, filter 0.1s ease-out;
-            text-align: center;
-        }
+.grid-container.case-study {
+    display: block;
+    grid-auto-columns: none;
+    gap: 0; /* Reset gap */
+}
 
-        .footer {
-            background-color: #000;
-        }
+.grid-container.case-study .full-width {
+    width: 100%;
+}
 
-        .footer .flex{
-            display: flex;
-            width: 96vw;
-            padding-top: 60px;
-            margin-left: auto;
-            margin-right: auto;
-            padding-bottom: 60px;
-            justify-content: space-between;
-        }
+.grid-container.case-study .full-width img{
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+}
 
-        .footer .flex .footer-logo {
-            width: 300px;
-        }
+.grid-item {
+    background-color: #000;
+    aspect-ratio: 16 / 9;
+    position: relative;
+    overflow: hidden; /* Hide overflow */
+}
 
-        .footer .flex .footer-logo svg {
-            width: 100%;
-            height: auto;
-        }
+.grid-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Add transform to transition */
+}
 
-        .footer .flex .footer-message {
-            color: #fff;
-        }
+.grid-item:hover img{
+    opacity: 0.3;
+    transform: scale(1.05); /* Subtle zoom on hover */
+}
 
-        a {
-            color: inherit;
-        }
+.studio-descriptor {
+    font-family: "Cossette Texte", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    color: white;
+    font-size: 22px;
+    border-top: 1px solid #fff;
+    padding-top: 10px;
+    width: calc(100% - 40px); /* Use calc for better padding */
+    z-index: 10;
+    pointer-events: none;
+    transition: opacity 0.1s ease-out, filter 0.1s ease-out;
+    box-sizing: border-box;
+}
 
-        .work-section-title {
-            font-size: 1.1vw;
-            color: #fff;
-            font-family: "Cossette Texte", sans-serif;
-        }
+.footer {
+    background-color: #000;
+    padding: 60px 0;
+}
 
-        .flex-sticky-header {
-            width: 30vw;
-            margin: 2vh auto;
-            position: sticky;
-            top: 30px;
-            display: flex;
-            justify-content: space-between;
-            z-index: 100000;
-            background-color: #57575755;
-            left: 50%;
-            transform: translateX(-50%);
-            backdrop-filter: blur(20px);
-            padding-top: 10px;
-            padding-bottom: 10px;
-            padding-left: 20px;
-            padding-right: 20px;
-            border-radius: 8px;
-        }
+.footer .flex{
+    display: flex;
+    width: 96vw;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: space-between;
+    align-items: center; /* Vertically center align items */
+}
 
-        .project-title {
-            color: #fff;
-            font-size: 14px;
-            margin-top: 10px;
-            padding-left: 6px;
-            width: 90%;
-            margin-bottom: 20px;
-            position: absolute;
-            bottom: 10px;
-            left: 20px;
-        }
+.footer .flex .footer-logo {
+    width: 300px;
+}
 
-        a {
-            text-decoration: none;
-        }
+.footer .flex .footer-logo svg {
+    width: 100%;
+    height: auto;
+    display: block; /* Remove bottom space */
+}
 
-        .grid-item:hover .project-detail {
-            opacity: 1;
-            transform: translateY(0);
-        }
+.footer .flex .footer-message {
+    color: #fff;
+}
 
-        .project-detail {
-            opacity: 0;
-            transform: translateY(-10px);
-            margin-left: 20px;
-            display: inline-block;
-            transition: all ease-in-out 0.3s;
-        }
+a {
+    color: inherit;
+    text-decoration: none; /* Remove default underline */
+}
 
-        .sticky-logo {
-            position: fixed;
-            top: 30px;
-            left: 30px;
-            z-index: 1000;
-            width: 200px;
-            transform: translateY(-100px);
-            transition: all ease-in-out 0.3s;
-        }
+.work-section-title {
+    font-size: 1.1vw;
+    color: #fff;
+    font-family: "Cossette Texte", sans-serif;
+}
 
-        .sticky-logo.active {
-            transform: translateY(0);
-        }
+.flex-sticky-header {
+    width: 30vw;
+    min-width: 300px; /* Ensure it's not too small on large screens */
+    margin: 2vh auto;
+    position: fixed;
+    bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    z-index: 100000;
+    background-color: #57575755;
+    left: 50%;
+    transform: translateX(-50%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px); /* Safari support */
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
 
-        .sticky-logo svg {
-            width: 100%;
-            height: auto;
-        }
+.project-title {
+    color: #fff;
+    font-size: 14px;
+    margin-top: 10px;
+    padding-left: 6px;
+    width: 90%;
+    margin-bottom: 20px;
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+}
 
+.two-col {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5vw; /* Add gap for consistency */
+}
+
+.two-col .col{
+    width: calc(50% - 0.25vw); /* Adjust width for gap */
+}
+
+.two-col .col img{
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    display: block;
+}
+
+.full-width {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+.full-width img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.project-description {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    display: flex;
+    width: 90%;
+}
+
+.project-description h1 {
+    color: #fff;
+    line-height: 1;
+    margin: 0;
+}
+
+.project-description h1.client {
+    color: #848484;
+}
+
+.project-description p {
+    color: #fff;
+}
+
+.cols {
+    width: 50%;
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.cols.description p{
+    line-height: 1.4;
+    margin-right: 150px;
+}
+
+.col.padd {
+    position: relative;
+    display: flex; /* Use flex to center */
+    align-items: center;
+    justify-content: center;
+}
+
+.col.padd img{
+    width: 50%;
+    height: auto;
+    /* Remove absolute positioning */
+}
+
+.video-background iframe{
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    border: none; /* Remove iframe border */
+}
+
+.quick-menu {
+    display: flex;
+    flex-direction: row;
+    margin: 2vh auto;
+    position: fixed;
+    bottom: 100px;
+    z-index: 100000;
+    left: 50%;
+    transform: translate(-50%, 50px);
+    opacity: 0;
+    pointer-events: none;
+    transition: all ease-in-out 0.3s;
+}
+
+.quick-menu.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translate(-50%, 0px);
+}
+
+.quick-menu .grid-item {
+    width: 130px;
+    margin-right: 10px;
+    transition: all ease-in-out 0.3s;
+    border-radius: 8px; /* Add rounded corners */
+}
+
+.quick-menu .grid-item:last-child {
+    margin-right: 0; /* Remove margin from last item */
+}
+
+.quick-menu .grid-item:hover {
+    transform: translateY(-10px);
+    width: 150px;
+}
+
+.sticky-logo {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    z-index: 1000;
+    width: 200px;
+    transform: translateY(-100px);
+    transition: all ease-in-out 0.3s;
+}
+
+.sticky-logo.active {
+    transform: translateY(0);
+}
+
+.sticky-logo svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.about-text {
+    font-family: "Mona Sans", sans-serif;
+    font-size: 26px;
+    padding-bottom: 100px;
+    color: #787775;
+}
+
+.about-text span {
+    font-weight: 600;
+    display: block;
+}
+
+body.about {
+    background-color: #F0EDE9;
+}
+
+.about .col {
+    width: 42.3%;
+    padding-right: 3.4%;
+    box-sizing: border-box;
+}
+
+.about .stacked {
+    width: 42.3%;
+    padding-right: 3.4%;
+    padding-bottom: 100px;
+    box-sizing: border-box;
+}
+
+.about .col.left {
+    padding-left: 5%;
+    font-family: "Mona Sans", sans-serif;
+    color: #787775;
+    text-transform: uppercase;
+}
+
+.stacked .about-text {
+    padding-bottom: 30px;
+}
+
+.about-video {
+    padding-bottom: 100px;
+}
+.about-video video {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+
+.about-text.flex {
+    display: flex;
+}
+
+.about-text.flex .flex-col {
+    font-size: 18px;
+    margin-right: 20px;
+}
+
+
+/* =================================================================== */
+/* MOBILE RESPONSIVE STYLES                        */
+/* =================================================================== */
+
+@media (max-width: 768px) {
+
+    /* Reduce top position for logo */
+    .logo {
+        top: 20px;
+    }
+
+    /* Stack grid to a single column */
+    .grid-container {
+        grid-template-columns: 1fr;
+        gap: 1vw; /* Use vw for gap, or fixed px like 5px */
+        padding-left: 1vw; /* Add padding to prevent sticking to edge */
+        padding-right: 1vw;
+    }
+
+    /* Adjust descriptor font and padding */
+    .studio-descriptor {
+        font-size: 18px;
+        bottom: 15px;
+        left: 15px;
+        width: calc(100% - 30px);
+    }
+
+    /* Stack footer and center content */
+    .footer {
+        padding: 40px 0;
+    }
+    
+    .footer .flex {
+        flex-direction: column; /* Stack logo and message */
+        gap: 30px; /* Add space between stacked items */
+        width: 90vw;
+    }
+
+    .footer .flex .footer-logo {
+        width: 200px; /* Make logo smaller */
+    }
+
+    .footer .flex .footer-message {
+        text-align: center; /* Center footer text */
+        font-size: 14px;
+    }
+
+    /* Use a fixed, readable font size for titles */
+    .work-section-title {
+        font-size: 16px; /* vw unit becomes too small */
+        padding: 20px;
+    }
+
+    /* Make sticky header wider and position closer to bottom */
+    .flex-sticky-header {
+        width: 90vw; /* Take up more screen width */
+        min-width: 0; /* Reset min-width */
+        bottom: 15px; /* A bit closer to the bottom edge */
+        padding: 8px 15px;
+    }
+
+    /* Stack two-column layouts */
+    .two-col {
+        flex-direction: column; /* Stack columns */
+        gap: 1vw;
+    }
+
+    .two-col .col {
+        width: 100%; /* Make columns full-width */
+    }
+
+    /* Stack project description and remove large margins */
+    .project-description {
+        flex-direction: column; /* Stack title/client and description */
+        width: 90%;
+        position: relative; /* Change to relative for in-page flow */
+        transform: none;
+        top: 0;
+        left: 0;
+        padding: 20px 0; /* Add padding */
+        gap: 15px;
+    }
+
+    .cols {
+        width: 100%; /* Make each part full-width */
+    }
+
+    .cols.description p {
+        margin-right: 0; /* Remove the large desktop margin */
+        font-size: 16px; /* Ensure text is readable */
+        line-height: 1.5;
+    }
+    
+    .project-description h1 {
+        font-size: 28px; /* Adjust heading size for mobile */
+    }
+
+    .col.padd img {
+        width: 70%; /* Make padded image a bit larger */
+    }
+
+    /* Adjust quick menu for mobile */
+    .quick-menu {
+        bottom: 80px; /* Position above the new sticky header */
+        width: 90vw;
+        justify-content: center;
+        flex-wrap: wrap; /* Allow items to wrap if needed */
+        gap: 5px;
+    }
+
+    .quick-menu .grid-item {
+        width: 100px; /* Make items smaller */
+        margin-right: 5px;
+    }
+    
+    .quick-menu .grid-item:hover {
+        transform: translateY(-5px); /* Less dramatic hover */
+        width: 105px;
+    }
+
+    /* Adjust sticky logo size and position */
+    .sticky-logo {
+        width: 150px; /* Smaller logo on mobile */
+        top: 15px;
+        left: 15px;
+    }
+
+    /* Adjust 'About' page typography and layout */
+    .about-text {
+        font-size: 20px; /* Smaller font for mobile */
+        padding-bottom: 50px;
+    }
+
+    /* Stack 'About' page columns */
+    .about .col,
+    .about .stacked {
+        width: 100%; /* Full width for stacked content */
+        padding-right: 0; /* Remove side padding */
+        padding-bottom: 50px;
+    }
+
+    .about .col.left {
+        padding-left: 5%;
+        padding-right: 5%; /* Add matching right padding */
+    }
+
+    .stacked .about-text {
+        padding-bottom: 20px;
+    }
+
+    .about-video {
+        padding-bottom: 50px;
+    }
+
+    /* Stack inner flex columns */
+    .about-text.flex {
+        flex-direction: column; /* Stack the flex columns */
+        gap: 20px;
+    }
+    
+    .about-text.flex .flex-col {
+        margin-right: 0; /* Remove margin */
+        font-size: 16px;
+    }
+
+}
     </style>
 </head>
 <body>
