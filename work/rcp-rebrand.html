@@ -432,93 +432,6 @@
         </div>
     </div>
 
-    <script>
-        // Select the element
-        const stickyLogo = document.querySelector('.sticky-logo');
-
-        // How far to scroll before activating (in pixels)
-        const scrollThreshold = 300; // adjust as needed
-
-        window.addEventListener('scroll', () => {
-        if (!stickyLogo) return;
-
-        const scrollY = window.scrollY;
-
-        // Add or remove "active" class based on scroll position
-        if (scrollY > scrollThreshold) {
-            stickyLogo.classList.add('active');
-        } else {
-            stickyLogo.classList.remove('active');
-        }
-        });
-    </script>
-
-    <script>
-        // Select the logo element
-        const logo = document.querySelector('.logo');
-
-        // Adjust how much faster the logo scrolls away
-        const scrollSpeedMultiplier = 1.5;
-
-        window.addEventListener('scroll', () => {
-        if (!logo) return;
-
-        const scrollY = window.scrollY;
-
-        // Combine translateY for scroll effect with existing translateX(-50%) for centering
-        logo.style.transform = `translateX(-50%) translateY(${-scrollY * scrollSpeedMultiplier}px)`;
-
-        // Optional: make movement smoother
-        logo.style.transition = 'transform 0.1s ease-out';
-        });
-    </script>
-
-    <script>
-        // Select the elements
-        const workQuickMenus = document.querySelectorAll('.work-quick-menu');
-        const quickMenu = document.querySelector('.quick-menu');
-
-        let timeoutId = null;
-
-        // Function to add the active class
-        function activateQuickMenu() {
-        if (!quickMenu) return;
-        quickMenu.classList.add('active');
-
-        // Clear any pending timeout to remove
-        clearTimeout(timeoutId);
-        }
-
-        // Function to remove the active class after 20s if not hovered
-        function deactivateQuickMenuWithDelay() {
-        if (!quickMenu) return;
-        
-        // Clear any previous timeout
-        clearTimeout(timeoutId);
-        
-        // Start a new 20s timeout
-        timeoutId = setTimeout(() => {
-            // Only remove if neither element is hovered
-            const isHovered = [...workQuickMenus].some(menu => menu.matches(':hover')) || quickMenu.matches(':hover');
-            if (!isHovered) {
-            quickMenu.classList.remove('active');
-            }
-        }, 3000);
-        }
-
-        // Add hover listeners
-        workQuickMenus.forEach(menu => {
-        menu.addEventListener('mouseenter', activateQuickMenu);
-        menu.addEventListener('mouseleave', deactivateQuickMenuWithDelay);
-        });
-
-        if (quickMenu) {
-        quickMenu.addEventListener('mouseenter', activateQuickMenu);
-        quickMenu.addEventListener('mouseleave', deactivateQuickMenuWithDelay);
-        }
-    </script>
-    
-    <!-- Vertex Shader: Positions the vertices of the plane we draw on. -->
     <script id="vertex-shader" type="x-shader/x-vertex">
         attribute vec4 a_position;
         void main() {
@@ -526,7 +439,6 @@
         }
     </script>
 
-    <!-- Fragment Shader: Calculates the color for each pixel, creating the liquid effect. -->
     <script id="fragment-shader" type="x-shader/x-fragment">
         precision highp float;
 
@@ -780,6 +692,12 @@
         let lastRippleTime = 0; // For throttling mousemove events
         const rippleInterval = 50; // ms, create a ripple at most every 50ms (20fps)
 
+        // --- NEW: Touch-scroll management ---
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let isScrolling = false; // Flag to track if the current gesture is a scroll
+        const scrollDeadZone = 10; // Pixels to move before we decide if it's a scroll
+
         // --- Hover Management ---
         let hoverPos = { x: -1, y: -1 }; // Offscreen initially
         let targetHoverStrength = 0.0;
@@ -915,18 +833,54 @@
             targetHoverStrength = 0.0;
         });
 
+        // --- MODIFIED: touchstart ---
         canvas.addEventListener('touchstart', (event) => {
             isInteracting = true;
             interactionStartTime = performance.now();
-            lastInteractionPos = { x: 0, y: 0, time: 0 }; // Reset on new touch
-            event.preventDefault(); 
+            lastInteractionPos = { x: 0, y: 0, time: 0 }; // Reset
+            
+            // --- NEW: Reset scroll detection ---
+            isScrolling = false; 
+            const touch = event.touches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+            
+            // We removed event.preventDefault() to allow scrolling.
+            // We can still create a ripple on the initial tap.
             for (let i = 0; i < event.touches.length; i++) {
                 createRipple(event.touches[i].clientX, event.touches[i].clientY);
             }
-        }, { passive: false });
+        }); // Removed { passive: false } to allow default scroll check
 
+        // --- MODIFIED: touchmove ---
         canvas.addEventListener('touchmove', (event) => {
+            if (!isInteracting) return; // Touch didn't start on canvas
+
+            // --- NEW: Scroll Detection Logic ---
+            if (isScrolling) {
+                // We've already decided this is a scroll, so let the browser handle it.
+                return;
+            }
+
+            const touch = event.touches[0];
+            const dx = touch.clientX - touchStartX;
+            const dy = touch.clientY - touchStartY;
+
+            // Check if we've moved outside the deadzone
+            if (Math.abs(dx) > scrollDeadZone || Math.abs(dy) > scrollDeadZone) {
+                // If vertical movement is dominant, it's a scroll.
+                if (Math.abs(dy) > Math.abs(dx)) {
+                    isScrolling = true;
+                    return; // Stop processing and let the browser scroll
+                }
+                // If horizontal, we'll fall through and treat it as an interaction.
+            }
+            
+            // If we're here, it's an interaction (horizontal drag), not a scroll.
+            // Now we can safely prevent default to stop any other browser action.
             event.preventDefault();
+
+            // This is the original ripple-creation logic
             if (isInteracting) {
                 const now = performance.now();
                 if (now - lastRippleTime > rippleInterval) {
@@ -936,11 +890,13 @@
                     lastRippleTime = now;
                 }
             }
-        }, { passive: false });
+        }, { passive: false }); // We MUST keep { passive: false } here to allow event.preventDefault()
 
+        // --- MODIFIED: touchend ---
         window.addEventListener('touchend', () => {
             isInteracting = false;
             interactionStartTime = 0;
+            isScrolling = false; // --- NEW: Reset scroll flag ---
         });
 
         // --- Scroll Listener for Fade Effect ---
@@ -1052,8 +1008,7 @@
         // Start the process by setting up the text texture, 
         // which will then kick off the render loop.
         setupTextTexture();
-    </script>
-</body>
+    </script></body>
 </html>
 
 
