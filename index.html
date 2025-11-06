@@ -135,13 +135,13 @@ canvas {
     left: 20px;
     color: white;
     font-size: 22px;
-    border-top: 1px solid #fff;
     padding-top: 10px;
     width: calc(100% - 40px); /* Use calc for better padding */
     z-index: 10;
     pointer-events: none;
     transition: opacity 0.1s ease-out, filter 0.1s ease-out;
     box-sizing: border-box;
+    text-align: center;
 }
 
 .footer {
@@ -471,6 +471,10 @@ body.about {
     .work-section-title {
         font-size: 16px; /* vw unit becomes too small */
         padding: 20px;
+    }
+
+    .grid-container {
+        padding-top: 4px;
     }
 
     /* Make sticky header wider and position closer to bottom */
